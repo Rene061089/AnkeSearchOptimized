@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApplication1</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/jqueryui/jquery-ui.min.css" />
+    <link rel="stylesheet" href="~/css/virtual-select.min.css" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/mustache.min.js"></script>
+    <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="~/lib/jqueryui/jquery.inputmask.min.js"></script>
+    <script src="~/lib/jquery-multi-select/virtual-select.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</head>
+<body>
+    <header>
+        <section>
+            <div class="inner">
+                <div class="cell">
+                    <div class="container-header">
+                        <div class="headerHedline">
+                            Ankenævnet
+                            <br>
+                            <i>for</i>
+                            Forsikring
+                        </div>
+
+                        <div class="container-list">
+                            <div class="rightContent1">
+                                <ul>
+                                    <li>
+                                        <a href="https://www.dr.dk/">Log på portal</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.dr.dk/">Ofte stillede spørgsmål</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.dr.dk/">Intro in English</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="rightContent2">
+                                <ul>
+                                    <li>
+                                        <a href="https://www.dr.dk/">klageguide</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://localhost:7017">Afgørelser</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.dr.dk/">Statistic</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </header>
+    <content>
+        @RenderBody()
+    </content>
+    <footer>
+        <section>
+            <div class="inner">
+                <div class="cell">
+                    <div class="first-footer">
+                        <div class="container-first-footer">
+                            <div class="left-links">
+                                <ul>
+                                    <li><a href="https://ankeforsikring.dk/om-ankeforsikring/Sider/Om-at-klage.aspx">Om Ankenævnet for Forsikring</a></li>
+                                    <li><a href="https://ankeforsikring.dk/Sider/faq.aspx">Ofte stillede spørgsmål</a></li>
+                                    <li><a href="https://ankeforsikring.dk/Sider/Vejledning-for-forbrugere.aspx">Vejledning for forbrugere</a></li>
+                                    <li><a href="https://ankeforsikring.dk/Sider/vejledning-for-selskaber.aspx">Vejledning for forsikringsselskaber</a></li>
+                                    <li><a href="https://ankeforsikring.dk/Sider/Behandling-af-personoplysninger.aspx">Personoplysninger</a></li>
+                                </ul>
+                            </div>
+                            <div class="right-links">
+                                <ul>
+                                    <li>Ankenævnet for Forsikring</li>
+                                    <li>Østergade 18, 2.</li>
+                                    <li>1100  København K</li>
+                                    <li>Telefon +45 33 15 89 00 (kl. 10.00-13.00)</li>
+                                    <li><img src="/images/mailAddress.png"/></li>
+                                    <li>CVR: 84699128</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="last-footer">
+                        <div class="container-last-footer">
+                            <div class="three-images">
+                                <div class="one">
+                               <a href="https://finance.ec.europa.eu/consumer-finance-and-payments/retail-financial-services/financial-dispute-resolution-network-fin-net_en" target="_blank"></a>
+                                   <p>Tilsluttet
+                                       <br >
+                                       The Financial Dispute
+                                       <br >
+                                       Resolution Network
+                                   </p>
+                                  </div>
+                               <div class="two">
+                                    <a href="https://em.dk/" target="_blank"> </a>
+                                   <p>Godkendt af
+                                       <br >
+                                       Erhvervs- og
+                                       <br >
+                                       Vækstministeriet
+                                   </p>
+                               </div>
+                               <div class="three">
+                                   <a href="https://taenk.dk" target="_blank"></a>
+                                   <a href="https://www.fogp.dk/" target="_blank"></a>
+                                   <p>Oprettet i 1975 af
+                                       <br >
+                                       Forbrugerrådet og
+                                       <br >
+                                       F&P
+                                   </p>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </footer>
+    <footer>
+        <section>
+            <div class="inner">
+                <div class="cell">
+                </div>
+            </div>
+        </section>
+    </footer>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

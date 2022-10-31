@@ -1,0 +1,1069 @@
+﻿
+<script type="text/javascript">
+
+    var pages = 1;
+    var uniqeSearchString = "";
+
+    console.log(pages);
+
+
+    function searchCallback(data) {
+        console.log("pages " + pages);
+
+
+        for (let i = 0; i < data.cases.length; i++) {
+
+
+            data.cases[i].DATE_FORMATED = formatDate(data.cases[i].closeD_DATE);
+            data.cases[i].principle = formatPK(data.cases[i].principle)
+            data.cases[i].searchWords = data.cases[i].searchWords;
+            data.cases[i].result = data.cases[i].result.trim();
+            console.log(data.cases[i].closeD_DATE);
+
+        }
+        //Selskab dropdown
+        for (let i = 0; i < data.fCompanyName.length; i++) {
+            data.fCompanyName[i].label = data.fCompanyName[i].name + " (" + data.fCompanyName[i].count + ")";
+            data.fCompanyName[i].value = data.fCompanyName[i].name;
+        }
+
+        for (let i = 0; i < data.fCompanyName.length; i++) {
+            document.querySelector('#companyNames').addOption(data.fCompanyName[i]);
+        }
+
+        //Type-forsikring dropdown
+        for (let i = 0; i < data.fInsuranceType.length; i++) {
+            data.fInsuranceType[i].label = data.fInsuranceType[i].name + " (" + data.fInsuranceType[i].count + ")";
+            data.fInsuranceType[i].value = data.fInsuranceType[i].name;
+        }
+
+        for (let i = 0; i < data.fInsuranceType.length; i++) {
+            document.querySelector('#insuranceType').addOption(data.fInsuranceType[i]);
+        }
+
+        var template = $("#datalist").html();
+        var rendered = Mustache.render(template, data);
+        $("#containerData").html(rendered);
+
+        $(".totalRulingsSpan").html(data.total);
+
+        //if (pages > 1 ) {
+        //document.getElementById("scrollToHere").scrollIntoView();
+        // }
+
+        setSavedStars();
+
+
+        //console.log(document.getElementById("fromDate_alt").value)
+    }
+
+
+    function getSavedCases() {
+
+        var cases = localStorage.getItem("caseNR");
+
+        if (cases === null) {
+            cases = [];
+        }
+        var numberSavedCases = 0;
+        var arrCases = [];
+
+        if (cases.length > 0) {
+            arrCases = cases.split(",");
+            numberSavedCases = arrCases.length;
+        }
+
+        $(".savedRulingsNumber").html(" (" + numberSavedCases + ")");
+
+        return arrCases;
+    }
+
+    function setSavedCase(caseNumber) {
+        var index = -1;
+        var arrCases = getSavedCases();
+        for (let i = 0; i < arrCases.length; i++) {
+            if (arrCases[i] == caseNumber)
+                index = i;
+        }
+        if (index === -1) {
+            arrCases.push(caseNumber);
+        } else {
+            arrCases.splice(index, 1);
+        }
+
+        localStorage.setItem("caseNR", arrCases.join(","))
+
+
+        if (localStorage.getItem("caseNR") == '') {
+            localStorage.removeItem("caseNR");
+        }
+        console.log(arrCases)
+    }
+
+
+
+    function setSavedStars() {
+
+        var savedCases = getSavedCases();
+
+
+        $(".saved-caseNumber").each(function() {
+            var isSaved = false;
+
+            for (let i = 0; i < savedCases.length; i++) {
+
+                if ($(this).text().trim() == savedCases[i]) {
+                    isSaved = true;
+                }
+            }
+            if (isSaved) {
+                $(this).closest(".row").find(".container-star .star").addClass("saved");
+            }
+            else {
+                $(this).closest(".row").find(".container-star .star").removeClass("saved");
+            }
+        })
+
+
+    }
+
+
+
+
+    function formatPK(PK) {
+
+        var no = "Nej"
+        var yes = "Ja"
+
+        if (PK == true) {
+            return yes;
+        } else {
+            return no;
+        }
+
+    }
+
+    function formatDate(d) {
+
+        var nd = new Date(d);
+        return ('0' + nd.getDate()).slice(-2) + '.' + ('0' + (nd.getMonth() + 1)).slice(-2) + '.' + nd.getFullYear();
+    }
+
+    function makeSearchString(arg) {
+
+        var argParams = arg.split(" ");
+        var wordsInOneSummary = "";
+
+        for (var i = 0; i < argParams.length; i++) {
+            wordsInOneSummary += argParams[i] + " + "
+
+        }
+        console.log("Words: " + wordsInOneSummary)
+        return (wordsInOneSummary.slice(0, -2));
+
+    }
+
+    function getDataObject() {
+        var postData = {
+            "words": $("#txtInputAutocomplete").val(),
+            "orderby": $(".container-header-content").data("orderby"),
+            "searchby": $(".container-header-content").data("searchby"),
+            "pages": pages,
+            "principal": $("#checkboxPK").is(":checked"),
+            "complaintsUpheld": $("#checkboxComplainantUpheld").is(":checked"),
+            "companyComplaintsUpheld": $("#checkboxCompanyUpheld").is(":checked"),
+            "complaintsPartlyUpheld": $("#checkboxComplainantPartialUpheld").is(":checked"),
+            "paragraph4": $("#checkboxComplaintDenied").is(":checked"),
+            "insuranceType": $("#insuranceType").val(),
+            "company": $("#companyNames").val(),
+            "from": $("#fromDate_alt").val(),
+            "to": $("#toDate_alt").val()
+
+
+        }
+
+        return postData;
+    }
+    function getRulingsByID_callback(data) {
+
+        if (!data) {
+            data = {
+                cases: []
+            };
+        }
+
+        for (let i = 0; i < data.cases.length; i++) {
+
+
+            data.cases[i].DATE_FORMATED = formatDate(data.cases[i].closeD_DATE);
+            data.cases[i].principle = formatPK(data.cases[i].principle)
+            data.cases[i].searchWords = data.cases[i].searchWords;
+            data.cases[i].result = data.cases[i].result.trim();
+            console.log(data.cases[i].closeD_DATE);
+
+        }
+        var template = $("#datalistsaved").html();
+        var rendered = Mustache.render(template, data);
+        $("#localSavedCases").html(rendered);
+
+        setSavedStars();
+
+
+    }
+
+    $(function() {
+
+
+
+
+        $(".container-header-content > div").on("click", function() {
+            var searchBy = $(this).attr("searchby");
+
+            var current = "";
+            if ($(this).hasClass("asc")) {
+                current = "asc";
+            }
+            else if ($(this).hasClass("desc")) {
+                current = "desc";
+            }
+
+            $(this).closest(".container-header-content").find(">div").removeClass("asc desc");
+
+            switch (current) {
+                //case "asc":
+                //    $(this).addClass("desc");
+                //    break;
+                case "desc":
+                    $(this).addClass("asc");
+                    break;
+                default:
+                    $(this).addClass("desc");
+                    break;
+            }
+            var orderBy = $(this).hasClass("desc") ? "desc" : "asc";
+
+            $(this).closest(".container-header-content").data("searchby", searchBy);
+            $(this).closest(".container-header-content").data("orderby", orderBy);
+
+            search(getDataObject(), false, searchCallback);
+
+        });
+
+        $(".getMoreRulings").on("click", function() {
+            pages = pages + 1;
+            var rulings = $(".totalRulingsSpan").html()
+            search(getDataObject(), false, searchCallback)
+
+            if (pages > 9) {
+                $(this).closest(".container-button-getRulings").addClass("ToManyRulings");
+            }
+
+            if (pages * 10 > rulings) {
+                $(this).closest(".container-button-getRulings").addClass("noMoreRulings");
+            }
+        });
+
+
+        VirtualSelect.init({
+
+            ele: '#companyNames',
+
+            //options: myOptions,
+            multiple: true,
+            placeholder: 'Vælg',
+            silentInitialValueSet: true,
+        });
+        VirtualSelect.init({
+            ele: '#insuranceType',
+            //options: myOptions,
+            multiple: true,
+            placeholder: 'Vælg',
+            silentInitialValueSet: true,
+        });
+
+
+        $("#containerData").on("click", ".row div.arrow", function() {
+            $(this).closest(".row").toggleClass("open");
+
+        });
+
+        $("#localSavedCases").on("click", ".row div.arrow", function() {
+            $(this).closest(".row").toggleClass("open");
+
+        });
+
+
+
+        $(".container-outer.header").on("click", ".open-close-all-resumées span", function() {
+            //TODO: Er det nødvendigt at sætte en klasse på begge id'er eller er der den smartere måde
+            $("#containerData .row").addClass("open");
+            $("#localSavedCases .row").addClass("open");
+            $(this).addClass("open");
+
+        });
+        $(".container-outer.header").on("click", ".open-close-all-resumées span.open", function() {
+            console.log("Click")
+            //TODO: Er det nødvendigt at sætte en klasse på begge id'er eller er der den smartere måde(DETTE ER I FORBINDELSE MED GEMTE SAGER)
+            $("#containerData .row").removeClass("open");
+            $("#localSavedCases .row").removeClass("open");
+
+            $(this).removeClass("open");
+        });
+
+
+
+        $("#containerData").on("click", ".row div.star", function() {
+            $(this).toggleClass("saved");
+
+            var itemToCheckFor = $(this).closest(".row").find(".saved-caseNumber").text();
+
+            setSavedCase(itemToCheckFor)
+            getSavedCases();
+        });
+
+        $("#localSavedCases").on("click", ".row div.star", function() {
+            $(this).toggleClass("saved");
+
+            var itemToCheckFor = $(this).closest(".row").find(".saved-caseNumber").text();
+            setSavedCase(itemToCheckFor)
+            getRulingsByID(getSavedCases(), getRulingsByID_callback);
+
+            if (getSavedCases().length == 0) {
+                console.log("One Time")
+                $(".goToSavedRulings").trigger("click");
+            }
+
+        });
+
+        $(".goToSavedRulings").on("click", function() {
+
+
+            getRulingsByID(getSavedCases(), getRulingsByID_callback);
+            $(".savedRulingsHidden").addClass("closed");
+            $(".savedRulings").addClass("open");
+
+            $(".goToSearchResult").removeClass("active");
+            $(".goToSavedRulings").addClass("active")
+
+            $(".totalRulings").addClass("active")
+
+            $(".container-search-subscription").addClass("active")
+
+            $(".container-button-getRulings").addClass("active")
+            $(".container-text-under-getMoreRulingsButton").addClass("active")
+
+
+            if (getSavedCases().length == 0) {
+                $(".filler-when-empty").addClass("active")
+            }
+
+
+
+        });
+
+
+        $(".goToSearchResult").on("click", function() {
+
+            //$(".goToSearchResult").addClass("active");
+            $(".goToSearchResult").addClass("active");
+            $(".goToSavedRulings").removeClass("active")
+            $(".starImage").removeClass("active")
+
+            $(".savedRulingsHidden").removeClass("closed");
+            $(".savedRulings").removeClass("open");
+
+            $(".totalRulings").removeClass("active")
+
+            $(".container-search-subscription").removeClass("active")
+
+            $(".container-button-getRulings").removeClass("active")
+            $(".container-text-under-getMoreRulingsButton").removeClass("active")
+
+            $(".filler-when-empty").removeClass("active")
+
+
+        });
+
+
+
+        $(".removeAllSavedCases").on("click", function() {
+
+            //$("#localSavedCases .row .container-star .star").removeClass("saved")
+            //$("#containerData .row .container-star .star").removeClass("saved")
+
+            localStorage.removeItem("caseNR")
+            getRulingsByID(getSavedCases(), getRulingsByID_callback);
+
+        });
+
+        $(".modalSaveCase").on("click", function() {
+
+
+            var itemToCheckFor = $(".modal-header").find("#modal-caseNumber").text();
+            setSavedCase(itemToCheckFor)
+            getRulingsByID(getSavedCases(), getRulingsByID_callback);
+        });
+
+
+
+        $("#containerData").on("click", ".container-outer.mobile ", function() {
+
+            var da = $(this).closest('div').find(".dato-modal").text()
+            var su = $(this).closest('div').find(".summary-modal").text()
+            var re = $(this).closest('div').find(".result-modal").text()
+            var cNu = $(this).closest('div').find(".caseNumber-modal").text()
+            var sw = $(this).closest('div').find(".searchWords-modal").text()
+            var cNa = $(this).closest('div').find(".companyName-modal").text()
+            var it = $(this).closest('div').find(".insuranceType-modal").text()
+            var pk = $(this).closest('div').find(".principle-modal").text()
+
+            $("#modal-dato").html(da)
+            $("#modal-summary").html(su)
+            $("#modal-result").html(re)
+            $("#modal-caseNumber").html(cNu)
+            $("#modal-searchWords").html(sw)
+            $("#modal-companyName").html(cNa)
+            $("#modal-insuranceType").html(it)
+            $("#modal-principle").html(pk)
+
+        });
+
+        $("#localSavedCases").on("click", ".container-outer.mobile ", function() {
+
+            var da = $(this).closest('div').find(".dato-modal").text()
+            var su = $(this).closest('div').find(".summary-modal").text()
+            var re = $(this).closest('div').find(".result-modal").text()
+            var cNu = $(this).closest('div').find(".caseNumber-modal").text()
+            var sw = $(this).closest('div').find(".searchWords-modal").text()
+            var cNa = $(this).closest('div').find(".companyName-modal").text()
+            var it = $(this).closest('div').find(".insuranceType-modal").text()
+            var pk = $(this).closest('div').find(".principle-modal").text()
+
+            $("#modal-dato").html(da)
+            $("#modal-summary").html(su)
+            $("#modal-result").html(re)
+            $("#modal-caseNumber").html(cNu)
+            $("#modal-searchWords").html(sw)
+            $("#modal-companyName").html(cNa)
+            $("#modal-insuranceType").html(it)
+            $("#modal-principle").html(pk)
+
+        });
+
+
+
+
+
+
+        $("#btngetsuggest").on("click", function() {
+            suggest($("#txtinputsuggest").val(), suggestcallback);
+
+        });
+
+
+
+        $(".first-cbox-row > input").on("click", function() {
+            $("#btnAutocomplete").trigger("click");
+
+        });
+
+        $(".second-cbox-row > input").on("click", function() {
+            $("#btnAutocomplete").trigger("click");
+        });
+
+        $("#txtInputAutocomplete").on("keypress", function(event) {
+            if (event.which == 13) {
+
+                $("#btnAutocomplete").trigger("click");
+                $("#txtInputAutocomplete").autocomplete("close");
+
+            }
+        });
+
+
+        $("#btnAutocomplete").on("click", function() {
+            search(getDataObject(), true, searchCallback);
+        });
+
+        $("#resetSearch").on("click", function() {
+
+            document.getElementById("txtInputAutocomplete").value = "";
+            $(".search-box-label input[type=checkbox]").prop('checked', false);
+
+            if ($(".container-button-getRulings").hasClass("noMoreRulings")) {
+                $(".container-button-getRulings").removeClass("noMoreRulings")
+            }
+            if ($(".container-button-getRulings").hasClass("ToManyRulings")) {
+                $(".container-button-getRulings").removeClass("ToManyRulings")
+            }
+
+            $("#fromDate").val("");
+            $("#fromDate_alt").val("");
+            $("#toDate").val("");
+            $("#toDate_alt").val("");
+
+            pages = 1;
+            search(getDataObject(), true, searchCallback);
+
+        });
+
+
+
+
+        $("#txtInputAutocomplete").autocomplete({
+            source: function(request, response) {
+
+                $.ajax({
+                    url: "/api/case/autocomplete",
+                    dataType: "json",
+                    headers: {
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin": "*"
+                    },
+                    data: {
+                        "term": $("#txtInputAutocomplete").val()
+                    },
+                    success: function(data) {
+                        response(data)
+
+                    }
+                });
+
+            },
+            minLength: 3,
+            select: function(event, ui) {
+                event.preventDefault();
+                console.log("Selected: ", ui.item.label);
+                $("#txtInputAutocomplete").val(ui.item.label);
+
+                search(getDataObject(), true, searchCallback);
+            }
+        }).autocomplete("instance")._renderItem = function(ul, item) {
+            return $("<li>")
+                .append("<div>" + item.label + "</div>")
+                .appendTo(ul);
+        };
+
+
+
+        $("#fromDate").datepicker({
+            dateFormat: "dd-mm-yy",
+            altFormat: "yy-mm-dd",
+            altField: "#fromDate_alt",
+        }).inputmask("99-99-9999").on("keypress", function(e) {
+            if (e.which == 13) {
+                $("#btnAutocomplete").trigger("click");
+            }
+        });
+
+        $("#toDate").datepicker({
+            dateFormat: "dd-mm-yy",
+            altFormat: "yy-mm-dd",
+            altField: "#toDate_alt"
+    }).inputmask("99-99-9999").on("keypress", function(e) {
+            if (e.which == 13) {
+                $("#btnAutocomplete").trigger("click");
+            }
+        });
+
+
+
+    //Her Kalder jeg search første gang.
+    search(getDataObject(), true, searchCallback);
+
+                    })
+
+</script>
+
+<section>
+    <div class="inner">
+        <div class="cell">
+            <div class="containerPic backgroundpic">
+                <div class="container-inner">
+                    <h2>Se resultater fra andre afgørelser</h2>
+                    <div>
+                        <h4>
+
+                            <i>Bliv bedre klædt på til din sag eller se resultater fra andre typer af klager</i>
+                            <br>
+                            <i>Du kan også abonnere på bestemte typer af afgørelser. </i>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="cell">
+            <div class="containerSearchParams">
+                <div class="search-box-label">
+                    <div class="row">
+                        <div class="col col-sm-12 col col-lg-12">
+                            Fritekstsøgning:
+                            <br>
+                            <input class="search-box" type="text" id="txtInputAutocomplete" />
+                            <div class="text-under-searchbox">
+                                <h4>
+                                    Du kan søge på kendelsesnummer, emneord, selskab, forsikringstype og resumé. <br>
+                                    Afslut søgeordet med * for også at fremsøge forskellige endelser på ordet.
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="col col-sm-6 col-lg-3 incBoxSize">
+                            <div>
+                                <lable class="incurance-type-label" for="incurancetype">Forsikringstype:</lable>
+                                <br>
+
+                                <div id="insuranceType" multiple placeholder="Vælg" data-search="false"></div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-6 col-lg-3 comBoxSize">
+                            <div>
+                                <lable class="company-label" for="company">Selskab:</lable>
+                                <br>
+                                <div id="companyNames" multiple placeholder="Vælg" data-search="false"></div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-12 col-lg-3">
+                            <div class="first-cbox-row">
+                                <label class="lable-for-cbox">Kendelser:</label>
+                                <br>
+                                <input type="checkbox" id="checkboxComplainantUpheld" />
+                                <lable>Klager medhold</lable>
+                                <br>
+                                <input type="checkbox" id="checkboxCompanyUpheld" />
+                                <lable>Selskab medhold</lable>
+                                <br>
+                                <input type="checkbox" id="checkboxPK" />
+                                <lable>Principielle afgørelser (P.K.)</lable>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="second-cbox-row">
+                                <br>
+                                <input type="checkbox" id="checkboxComplainantPartialUpheld" />
+                                <lable>Klager delvist medhold</lable>
+                                <br>
+                                <input type="checkbox" id="checkboxComplaintDenied" />
+                                <lable>Afvist</lable>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="col col-sm-6 col-lg-3 startBoxSize">
+                            <div >
+                                <lable class="start-date-lable" for="startdate">Datointerval fra:</lable>
+                                <br>
+                                <input class="start-date" type="text" id="fromDate" />
+                                <input type="hidden" id="fromDate_alt" />
+                            </div>
+                        </div>
+                        <div class="col col-sm-6 col-lg-3">
+                            <div >
+                                <lable class="end-date-lable" for="startdate">Til:</lable>
+                                <br>
+                                <input class="end-date" type="text" id="toDate" />
+                                <input type="hidden" id="toDate_alt" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="container-button">
+                                <div class="reset-search-button" id="resetSearch">Nulstil søgning</div>
+                                <input type="button" value="Søg" class="search-button" id="btnAutocomplete">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-searchAndSaved">
+                    <div class="container-buttons">
+                        <div class="goToSearchResult active"> Søgeresultat</div>
+                        <div class="goToSavedRulings "> Gemte afgørelser<div class="starImage"></div><span class="savedRulingsNumber">(0)</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<section>
+    <div class="inner">
+        <div class="cell">
+            <div class="row g-0 ">
+
+                <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                <div class="col-lg-10 col-md-10 col-sm-10">
+
+                    <div id="myHeader" class="container-outer header">
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="totalRulings">
+                                    <p class="showTotalRulings">Der er fundet <span class="totalRulingsSpan"></span> afgørelser</p>
+                                    <p class="removeAllSavedCases">Fjern alle gemte afgørelser</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="open-close-all-resumées"><div><span>Fold alle resuméer ind / ud på alle kendelser i listen</span></div></div>
+                            </div>
+                        </div>
+
+                        <div class="container-header-content">
+                            <div class="header-dato desc" searchby="CLOSED_DATE">Dato</div>
+                            <div class="header-kendelsesnr" searchby="CASE_NUMBER">Kendelsesnr.</div>
+                            <div class="header-emneord" searchby="SearchWords">Emneord</div>
+                            <div class="header-selskab" searchby="CompanyName">Selskab</div>
+                            <div class="header-forsikringstype" searchby="InsuranceType">Forsikringstype</div>
+                            <div class="header-medhold" searchby="RESULT">Medhold</div>
+                            <div class="header-pk" searchby="PRINCIPLE">P.K</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1"></div>
+            </div>
+
+            <div id="containerData" class="savedRulingsHidden"></div>
+            <div id="localSavedCases" class="savedRulings"></div>
+
+            <div class="container-button-getRulings">
+                <input class="getMoreRulings" type="button" value="Hent flere afgørelser" />
+                <div class="user-be-more-specifik-text">
+                    <p>Du har hentet 100 afgørelser og endnu ikke fundet hvad du ledte efter.<br> Vær mere specifik i din søgning for at indsævre søgningen, dette kan gøres ved at                          vælge flere søgeparametre.</p>
+                </div>
+                <div class="noMoreRulings"></div>
+                <div id="scrollToHere"></div>
+
+            </div>
+            <div class="container-text-under-getMoreRulingsButton">
+                <h4>
+                    Klik på et afgørelsesnummer for at hente afgørelsen i PDF-format(<a href="https://get.adobe.com/dk/reader/" target="_blank">hent Acrobat Reader her</a>)<br>
+                    Klik på stjernen til højre for en afgørelse for at gemme afgørelsen. Du kan se gemte afgørelser under fanen "Gemte afgørelser" øverst til højre.
+                </h4>
+            </div>
+            <div class="filler-when-empty">
+                <p>Du har ikke gemt nogle afgørelser</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="cell">
+
+            <div class="container-search-subscription">
+                <div class="container-upper-text">
+                    <h2>Abonnér på denne søgning</h2>
+                    <p>
+                        Du kan abonnere på resultatet af denne søgning, hvor vi vil sende dig en e-mail hver gang,<br> der lægges nye
+                        afgørelser på hjemmesiden, som matcher kriterierne <a data-bs-toggle="modal" data-bs-target="#subscrip-exemple-modal">se et eksempel her.</a>
+                    </p>
+                </div>
+                <div class="e-mail-subscription-header"> Din e-mail adresse:</div>
+                <div class="container-subscription-input">
+                    <input type="text" placeholder="Indtast e-mail her" id="input-subscription-id" />
+                    <input type="button" value="Abonnér" class="subscription-button" />
+                </div>
+                <div class="container-last-text">
+                    <h4>
+
+                        Du kan abonnere på flere søgninger på samme e-mailadresse. Du kan slette og redigere et søgeabonnement via et link i bunden af den e-mail, du modtager. Vi                             bruger ikke din e-mailadresse til andet og videregiver den ikke til tredjepart.
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <inner>
+        <cell>
+
+
+            <!-- Modal -->
+            <div class="modal" id="mobile-Modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <h4 style="display:inline-block;">kendelsesnr - <span id="modal-caseNumber"></span></h4>
+
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="col col-sm-4">
+                                    <h4>Dato</h4>
+                                    <h6 id="modal-dato"></h6>
+                                </div>
+                                <div class="col col-sm-4">
+                                    <h4>Medhold</h4>
+                                    <h6 id="modal-result"></h6>
+                                </div>
+                                <div class="col col-sm-4">
+                                    <h4>P.K.</h4>
+                                    <h6 id="modal-principle"></h6>
+                                </div>
+                                <div class="col-sm-12">
+                                    <h4>Emneord</h4>
+                                    <h6 id="modal-searchWords"></h6>
+                                </div>
+
+                                <div class="col col-sm-6">
+                                    <h4>Selskab</h4>
+                                    <h6 id="modal-companyName"></h6>
+                                </div>
+                                <div class="col col-sm-6">
+                                    <h4>Forsikringstype</h4>
+                                    <h6 id="modal-insuranceType"></h6>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <h4>Resumé</h4>
+                                    <h6 id="modal-summary"></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn close-button" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn modalSaveCase">Save changes</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal slut -->
+            <!-- Modal -->
+            <div class="modal" id="info-star-Modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <button type="button" class="close-star" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                        <div class="modal-body-info">
+                            Klik på <span class="modal-star-icon"></span>&nbsp;for at markere en kendelse til senere brug.
+                            De markerede kendelser kan herefter findes under "Gemte kendelser".
+                            Der benyttes cookies til gemte kendelser,
+                            så hvis man vælger at rydde sine cookies,
+                            mistes de gemte kendelser også.
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Modal slut -->
+            <!-- Modal -->
+            <div class="modal" id="info-resume-Modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <button type="button" class="close-resume" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                        <div class="modal-body-info">
+                            Klik på <span class="modal-arrow-icon"></span>&nbsp;ikonet for at vise resumét for den enkelte kendelse.
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Modal slut -->
+            <div class="modal" id="subscrip-exemple-modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <button type="button" class="close-exemple" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                        <div class="modal-body-info">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Modal slut -->
+
+        </cell>
+    </inner>
+</section>
+
+
+<script type="template/text" id="datalist">
+     {{#cases}}
+       <div class="row g-0">
+           <div id="container-arrow" class="col-lg-1 col-md-1 col-sm-1"> <div class="infoResume" data-bs-toggle="modal" data-bs-target="#info-resume-Modal"></div><div class="arrow" ></div></div>
+           <div  class="col-lg-10 col-md-10 col-sm-10 remove-padding">
+               <div class="container-outer desktop">
+                  <div class="first-filler"></div>
+                  <div class="container-data-content">
+                      <div ><div class="saved-date">{{DATE_FORMATED}}</div></div>
+                      <div ><div class="saved-caseNumber">{{casE_NUMBER}}</div></div>
+                      <div ><div class="saved-searchWords">{{searchWords}}</div></div>
+                      <div ><div class="saved-companyName">{{companyName}}</div></div>
+                      <div ><div class="saved-insuranceType">{{insuranceType}}</div></div>
+                      <div ><div class="saved-result">{{result}}</div></div>
+                      <div ><div class="saved-principle">{{principle}}</div></div>
+                  </div>
+                  <div class="row with-summary g-0">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-7"><div class="summary">{{summary}}</div></div>
+                      <div class="col-lg-3"></div>
+                  </div>
+                  <div class="last-filler"></div>
+               </div>
+           </div>
+           <div class="col-lg-1 col-md-1 col-sm-1 container-star"> <div class="infoStar" data-bs-toggle="modal" data-bs-target="#info-star-Modal"></div><div id="starid" class="star" ></div></div>
+       </div>
+
+
+       <div class="container-outer mobile">
+           <div class="container">
+               <div class="row">
+                 <div class="col col-sm-4">
+                    <strong><div >Dato</div></strong>
+                    <div class="dato-modal">{{DATE_FORMATED}}</div>
+                 </div>
+                   <div class="col col-sm-4">
+                    <strong><div>Medhold</div></strong>
+                    <div class="result-modal">{{result}}</div>
+                 </div>
+                 <div class="col col-sm-4">
+                    <strong><div>Kendelsesnr.</div></strong>
+                    <div class="caseNumber-modal">{{casE_NUMBER}}</div>
+    @*Button trigger modal *@
+    @*<div class="open-mobile-ruling" data-bs-toggle="modal" data-bs-target="#mobile-Modal"><p>Åben afgørelse</p></div>*@
+                 </div>
+                 </div>
+                 <div class="row">
+                  <div class="col col-sm-12">
+                    <strong><div >Selskab</div></strong>
+                    <div class="companyName-modal">{{companyName}}</div>
+                 </div>
+                 </div>
+                 <div class="row">
+                  <div class="col col-sm-4">
+                    <strong><div>Forsikringstype</div></strong>
+                    <div class="insuranceType-modal">{{insuranceType}}</div>
+                 </div>
+                 <div class="col col-sm-4">
+                    <strong><div>P.K</div></strong>
+                    <div class="principle-modal">{{principle}}</div>
+                 </div>
+                 <div class="col col-sm-4">
+                    <strong><div>Resumé</div></strong>
+                    <div class="open-mobile-ruling" data-bs-toggle="modal" data-bs-target="#mobile-Modal"><p>Åben afgørelse</p></div>
+                 </div>
+                 </div>
+                 <div class="row">
+                 <div class="col col-sm-12">
+                    <strong><div >Emneord</div></strong>
+                    <div class="searchWords-modal">{{searchWords}}</div>
+                 </div>
+
+                 <div class="summary-modal" style="display:none">{{summary}}</div>
+    @*<div class="searchWords-modal" style="display:none">{{searchWords}}</div>*@
+    @*<div class="companyName-modal" style="display:none">{{companyName}}</div>*@
+    @*<div class="principle-modal" style="display:none">{{principle}}</div>*@
+    @*<div class="insuranceType-modal" style="display:none">{{insuranceType}}</div>*@
+
+
+               </div>
+           </div>
+       </div>
+
+    {{/cases}}
+
+
+</script>
+<script type="template/text" id="datalistsaved">
+     {{#cases}}
+       <div class="row g-0">
+           <div id="container-arrow" class="col-lg-1 col-md-1 col-sm-1"> <div class="infoResume" data-bs-toggle="modal" data-bs-target="#info-resume-Modal"></div><div class="arrow" ></div></div>
+           <div  class="col-lg-10 col-md-10 col-sm-10 remove-padding">
+               <div class="container-outer desktop">
+                  <div class="first-filler"></div>
+                  <div class="container-data-content">
+                      <div><div class="saved-date">{{DATE_FORMATED}}</div></div>
+                      <div><div class="saved-caseNumber">{{casE_NUMBER}}</div></div>
+                      <div><div class="saved-searchWords">{{searchWords}}</div></div>
+                      <div><div class="saved-companyName">{{companyName}}</div></div>
+                      <div><div class="saved-insuranceType">{{insuranceType}}</div></div>
+                      <div><div class="saved-result">{{result}}</div></div>
+                      <div><div class="saved-principle">{{principle}}</div></div>
+                  </div>
+                  <div class="row with-summary g-0">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-7"><div class="summary">{{summary}}</div></div>
+                      <div class="col-lg-3"></div>
+                  </div>
+                  <div class="last-filler"></div>
+               </div>
+           </div>
+           <div class="col-lg-1 col-md-1 col-sm-1 container-star"> <div class="infoStar" data-bs-toggle="modal" data-bs-target="#info-star-Modal"></div><div id="starid" class="star" ></div></div>
+       </div>
+
+
+       <div class="container-outer mobile">
+           <div class="container">
+               <div class="row">
+                 <div class="col col-sm-4">
+                    <strong><div >Dato</div></strong>
+                    <div class="dato-modal">{{DATE_FORMATED}}</div>
+                 </div>
+                   <div class="col col-sm-4">
+                    <strong><div>Medhold</div></strong>
+                    <div class="result-modal">{{result}}</div>
+                 </div>
+                 <div class="col col-sm-4">
+                    <strong><div>Kendelsesnr.</div></strong>
+                    <div class="caseNumber-modal">{{casE_NUMBER}}</div>
+    @*Button trigger modal *@
+    @*<div class="open-mobile-ruling" data-bs-toggle="modal" data-bs-target="#mobile-Modal"><p>Åben afgørelse</p></div>*@
+                 </div>
+                 </div>
+                 <div class="row">
+                  <div class="col col-sm-12">
+                    <strong><div >Selskab</div></strong>
+                    <div class="companyName-modal">{{companyName}}</div>
+                 </div>
+                 </div>
+                 <div class="row">
+                  <div class="col col-sm-4">
+                    <strong><div>Forsikringstype</div></strong>
+                    <div class="insuranceType-modal">{{insuranceType}}</div>
+                 </div>
+                 <div class="col col-sm-4">
+                    <strong><div>P.K</div></strong>
+                    <div class="principle-modal">{{principle}}</div>
+                 </div>
+                 <div class="col col-sm-4">
+                    <strong><div>Resumé</div></strong>
+                    <div class="open-mobile-ruling" data-bs-toggle="modal" data-bs-target="#mobile-Modal"><p>Åben afgørelse</p></div>
+                 </div>
+                 </div>
+                 <div class="row">
+                 <div class="col col-sm-12">
+                    <strong><div >Emneord</div></strong>
+                    <div class="searchWords-modal">{{searchWords}}</div>
+                 </div>
+
+                 <div class="summary-modal" style="display:none">{{summary}}</div>
+    @*<div class="searchWords-modal" style="display:none">{{searchWords}}</div>*@
+    @*<div class="companyName-modal" style="display:none">{{companyName}}</div>*@
+    @*<div class="principle-modal" style="display:none">{{principle}}</div>*@
+    @*<div class="insuranceType-modal" style="display:none">{{insuranceType}}</div>*@
+
+
+               </div>
+           </div>
+       </div>
+
+    {{/cases}}
+
+
+</script>
+
