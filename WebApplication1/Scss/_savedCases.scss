@@ -1,5 +1,4 @@
-﻿
-// Hides all cases on "Gemte afgørelser" and shows only the saved cases. 
+﻿// Hides all cases on "Gemte afgørelser" and shows only the saved cases. 
 #containerData {
     &.savedRulingsHidden {
         display: contents;
@@ -29,7 +28,6 @@
         }
     }
 }
-
 
 #localSavedCases {
     // Creates the info madal and alle the stars to save and unsave the cases.
@@ -166,7 +164,6 @@
         }
     }
 }
-
 
 .filler-when-empty {
     display: none;

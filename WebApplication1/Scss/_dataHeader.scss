@@ -24,11 +24,9 @@
             font-style: italic;
         }
 
-
         .removeAllSavedCases {
             display: none;
         }
-
 
         &.active {
             .showTotalRulings {
@@ -60,7 +58,6 @@
         text-decoration-line: none;
     }
 
-
     .header-filler {
         height: 10px;
         background-color: #b6bbbd;
@@ -72,7 +69,6 @@
         background-color: #b6bbbd;
         cursor: pointer;
         height: 60px;
-
 
         > div {
             position: relative;

@@ -2,7 +2,6 @@
 @import "bootstrap/variables";
 @import "bootstrap/mixins/breakpoints";
 
-
 footer {
     .first-footer {
         position: relative;
@@ -90,7 +89,6 @@ footer {
                     flex-direction: column;
                 }
 
-
                 .one {
                     position: relative;
                     margin-top: 20px;
@@ -101,7 +99,6 @@ footer {
                     background-size: auto;
                     background-repeat: no-repeat;
                     background-position: center;
-
 
                     a {
                         position: absolute;
@@ -115,7 +112,6 @@ footer {
                         }
                     }
 
-
                     p {
                         margin-top: 100px;
                         text-align: center;
@@ -127,7 +123,6 @@ footer {
                     }
                 }
 
-
                 .two {
                     position: relative;
                     margin-top: 20px;
@@ -137,7 +132,6 @@ footer {
                     background-size: auto;
                     background-repeat: no-repeat;
                     background-position: center;
-
 
                     a {
                         position: absolute;
@@ -162,8 +156,6 @@ footer {
                     }
                 }
 
-
-
                 .three {
                     position: relative;
                     margin-top: 20px;
@@ -174,7 +166,6 @@ footer {
                     background-size: auto;
                     background-repeat: no-repeat;
                     background-position: center;
-
 
                     a {
                         position: absolute;

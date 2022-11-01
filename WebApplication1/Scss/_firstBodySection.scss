@@ -2,7 +2,6 @@
 @import "bootstrap/variables";
 @import "bootstrap/mixins/breakpoints";
 
-
 .containerPic {
     &.backgroundpic {
         position: relative;
@@ -27,7 +26,6 @@
             height: 200px;
             background-position: top 10px center, center;
         }
-
 
         .container-inner {
             margin-bottom: 10px;
