@@ -1,0 +1,197 @@
+﻿@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins/breakpoints";
+
+.container-outer.header {
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+    height: auto;
+    padding-top: 20px;
+    position: relative;
+
+    @include media-breakpoint-between(xs,lg) {
+        display: none;
+    }
+
+    .totalRulings {
+        .totalRulingsSpan {
+            font-weight: bold;
+        }
+
+        .showTotalRulings {
+            display: inline-block;
+            font-style: italic;
+        }
+
+
+        .removeAllSavedCases {
+            display: none;
+        }
+
+
+        &.active {
+            .showTotalRulings {
+                display: none;
+            }
+
+            .removeAllSavedCases {
+                display: inline-block;
+                text-decoration-line: underline;
+                cursor: pointer;
+            }
+
+            .removeAllSavedCases:hover {
+                text-decoration-line: none;
+            }
+        }
+    }
+
+    .open-close-all-resumées > div {
+        text-align: right;
+
+        span {
+            cursor: pointer;
+            text-decoration-line: underline;
+        }
+    }
+
+    .open-close-all-resumées > div > span:hover {
+        text-decoration-line: none;
+    }
+
+
+    .header-filler {
+        height: 10px;
+        background-color: #b6bbbd;
+    }
+
+    .container-header-content {
+        display: flex;
+        width: 100%;
+        background-color: #b6bbbd;
+        cursor: pointer;
+        height: 60px;
+
+
+        > div {
+            position: relative;
+        }
+
+        > div:after {
+            content: "";
+            position: absolute;
+            display: block;
+            height: 80%;
+            width: 1px;
+            left: 0px;
+            border: solid 1px #a8aeb2;
+            top: 10%;
+        }
+
+        > div:nth-child(1):after {
+            content: "";
+            position: absolute;
+            display: block;
+            height: 80%;
+            width: 1px;
+            left: 0px;
+            border: 0px;
+            top: 10%;
+        }
+
+        .asc, .desc {
+            background-color: #2d3e50;
+            color: white;
+
+            &:after {
+                content: "";
+                position: absolute;
+                display: block;
+                height: 80%;
+                width: 1px;
+                left: 0px;
+                border: 0px;
+                top: 10%;
+            }
+        }
+
+        .asc {
+            &:before {
+                content: "";
+                position: absolute;
+                display: block;
+                height: 16px;
+                width: 100%;
+                background-image: url("/images/icons/order-arrow.png");
+                background-size: 14px;
+                background-repeat: no-repeat;
+                background-position: center;
+                left: 0px;
+                bottom: 10px;
+                transition: 50ms linear;
+                transform: scaleY(1);
+            }
+        }
+
+        .desc {
+            &:before {
+                content: "";
+                position: absolute;
+                display: block;
+                height: 16px;
+                width: 100%;
+                background-image: url("/images/icons/order-arrow.png");
+                background-size: 14px;
+                background-repeat: no-repeat;
+                background-position: center;
+                left: 0px;
+                bottom: 10px;
+                transform: scaleY(-1);
+                transition: 50ms linear;
+            }
+        }
+    }
+
+    .container-header-content :nth-child(1) {
+        width: 10%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .container-header-content :nth-child(2) {
+        width: 15%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .container-header-content :nth-child(3) {
+        width: 25%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .container-header-content :nth-child(4) {
+        width: 15%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .container-header-content :nth-child(5) {
+        width: 20%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .container-header-content :nth-child(6) {
+        width: 10%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .container-header-content :nth-child(7) {
+        width: 5%;
+        text-align: center;
+        padding: 10px;
+    }
+}

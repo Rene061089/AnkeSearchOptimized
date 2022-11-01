@@ -1,0 +1,85 @@
+﻿@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins/breakpoints";
+
+
+.container-button-getRulings {
+    text-align: center;
+
+    &.active {
+        display: none;
+    }
+
+    .user-be-more-specifik-text {
+        display: none;
+    }
+
+    .getMoreRulings {
+        width: 80%;
+        height: 50px;
+        background-color: #2d3e50;
+        color: white;
+        border: 0px;
+        font-size: 21px;
+
+        @include media-breakpoint-between(xs,md) {
+            width: 98%;
+        }
+    }
+
+    &.ToManyRulings {
+
+        .user-be-more-specifik-text {
+            display: contents;
+            font-size: 22px;
+        }
+
+        .getMoreRulings {
+            display: none;
+        }
+    }
+
+    &.noMoreRulings {
+        .getMoreRulings {
+            display: none;
+        }
+    }
+}
+
+.container-text-under-getMoreRulingsButton {
+    width: 80%;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: solid 2px #2c3e50;
+    padding-bottom: 5px;
+
+    &.active {
+        display: none;
+    }
+
+    h4 {
+        font-size: 15px;
+        font-style: italic;
+        font-weight: 400;
+
+        a {
+            color: black;
+        }
+    }
+
+    @include media-breakpoint-between(xs,md) {
+        width: 95%;
+    }
+}
+
+.container-button-getRulings.ToManyRulings {
+    .user-be-more-specifik-text {
+        p {
+            font-size: 17px;
+            margin-bottom: 50px;
+            color: red;
+            font-weight: bold;
+        }
+    }
+}

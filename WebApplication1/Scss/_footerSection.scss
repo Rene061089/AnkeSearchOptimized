@@ -1,0 +1,210 @@
+﻿@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins/breakpoints";
+
+
+footer {
+    .first-footer {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-items: flex-end;
+        background-image: url("/images/bgBottom.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 210px;
+        width: 100%;
+
+        @include media-breakpoint-between(xs,md) {
+            height: 440px;
+        }
+
+        .container-first-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+
+            @include media-breakpoint-between(xs,md) {
+                flex-direction: column;
+            }
+
+            .left-links {
+                margin-left: 10%;
+
+                ul {
+                    list-style-type: none;
+                    padding-left: 0px;
+
+                    li {
+                        a {
+                            font-family: "PT Serif", serif;
+                            font-size: 18px;
+                            text-decoration: none;
+                            color: white;
+                        }
+                    }
+                }
+            }
+
+            .right-links {
+                margin-right: 10%;
+                text-align: right;
+
+                @include media-breakpoint-between(xs,md) {
+                    margin-top: 30px;
+                    margin-left: 10%;
+                    text-align: left;
+                }
+
+                ul {
+                    list-style-type: none;
+                    padding-left: 0px;
+
+                    li {
+                        font-family: "PT Serif", serif;
+                        font-size: 18px;
+                        text-decoration: none;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+
+    .last-footer {
+        .container-last-footer {
+            height: 250px;
+
+            @include media-breakpoint-between(xs,md) {
+                height: 600px;
+            }
+
+            .three-images {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+
+                @include media-breakpoint-between(xs,md) {
+                    align-items: center;
+                    flex-direction: column;
+                }
+
+
+                .one {
+                    position: relative;
+                    margin-top: 20px;
+                    margin-left: 40px;
+                    height: 100px;
+                    width: 200px;
+                    background-image: url("/images/logo_finnet.png");
+                    background-size: auto;
+                    background-repeat: no-repeat;
+                    background-position: center;
+
+
+                    a {
+                        position: absolute;
+                        top: 0px;
+                        height: 100%;
+                        display: block;
+
+                        &:nth-child(1) {
+                            width: 50%;
+                            left: 25%;
+                        }
+                    }
+
+
+                    p {
+                        margin-top: 100px;
+                        text-align: center;
+                        color: #b9b9b9;
+                    }
+
+                    @include media-breakpoint-between(xs,md) {
+                        margin-left: 0px;
+                    }
+                }
+
+
+                .two {
+                    position: relative;
+                    margin-top: 20px;
+                    height: 100px;
+                    width: 200px;
+                    background-image: url("/images/logo_Erhverv.png");
+                    background-size: auto;
+                    background-repeat: no-repeat;
+                    background-position: center;
+
+
+                    a {
+                        position: absolute;
+                        top: 0px;
+                        height: 100%;
+                        display: block;
+
+                        &:nth-child(1) {
+                            width: 100%;
+                            left: 0px;
+                        }
+                    }
+
+                    p {
+                        margin-top: 100px;
+                        text-align: center;
+                        color: #b9b9b9;
+                    }
+
+                    @include media-breakpoint-between(xs,md) {
+                        margin-top: 80px;
+                    }
+                }
+
+
+
+                .three {
+                    position: relative;
+                    margin-top: 20px;
+                    margin-right: 40px;
+                    height: 100px;
+                    width: 250px;
+                    background-image: url("/images/logo_forbrugerraadetogFP.png");
+                    background-size: auto;
+                    background-repeat: no-repeat;
+                    background-position: center;
+
+
+                    a {
+                        position: absolute;
+                        top: 0px;
+                        height: 100%;
+                        display: block;
+
+                        &:nth-child(1) {
+                            width: 50%;
+                            left: 0px;
+                        }
+
+                        &:nth-child(2) {
+                            width: 50%;
+                            right: 0px;
+                        }
+                    }
+
+                    p {
+                        margin-top: 100px;
+                        text-align: center;
+                        color: #b9b9b9;
+                    }
+
+                    @include media-breakpoint-between(xs,md) {
+                        margin-top: 80px;
+                        margin-right: 0px;
+                    }
+                }
+            }
+        }
+    }
+}

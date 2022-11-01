@@ -1,0 +1,102 @@
+﻿@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins/breakpoints";
+
+
+.container-search-subscription {
+    color: #2d3e50;
+    margin-top: 60px;
+    width: 100%;
+    margin-bottom: 20px;
+
+    &.active {
+        display: none;
+    }
+
+    @include media-breakpoint-between(xs,md) {
+        margin-top: 30px;
+    }
+
+    .container-upper-text {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+
+        @include media-breakpoint-between(xs,md) {
+            text-align: left;
+            width: 95%;
+            line-height: 1.2;
+        }
+
+        p {
+            @include media-breakpoint-between(xs,md) {
+                font-size: 14px;
+            }
+        }
+
+        a {
+            color: #2d3e50;
+            text-decoration-line: underline;
+            cursor: pointer;
+            font-style: italic;
+            font-weight: bold;
+        }
+    }
+
+    .e-mail-subscription-header {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 17px;
+        font-weight: bold;
+
+        @include media-breakpoint-between(xs,md) {
+            width: 95%;
+            font-size: 14px;
+        }
+    }
+
+    .container-subscription-input {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        white-space: nowrap;
+
+        @include media-breakpoint-between(xs,md) {
+            width: 95%;
+        }
+
+        #input-subscription-id {
+            height: 50px;
+            width: 70%;
+            text-indent: 20px;
+            border: solid 2px #2d3e50;
+        }
+
+        .subscription-button {
+            height: 50px;
+            width: 25%;
+            margin-left: 5%;
+            background-color: #2d3e50;
+            color: white;
+            border: solid 2px #2d3e50;
+        }
+    }
+
+    .container-last-text {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+
+        @include media-breakpoint-between(xs,md) {
+            width: 94%;
+        }
+
+        h4 {
+            font-size: 16px;
+            font-style: italic;
+        }
+    }
+}

@@ -1,0 +1,97 @@
+﻿@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins/breakpoints";
+
+
+.container-outer.desktop {
+    height: auto;
+    padding-bottom: 20px;
+    margin: 0 auto;
+
+    @include media-breakpoint-between(xs,lg) {
+        display: none;
+    }
+
+
+    .first-filler {
+        height: 20px;
+        background-color: #e9e8e4;
+    }
+
+
+    .last-filler {
+        height: 20px;
+        background-color: #e9e8e4;
+        border-bottom: solid 2px #2c3e50;
+    }
+
+    .container-data-content {
+        display: flex;
+        width: 100%;
+        background-color: #e9e8e4;
+        color: #2c3e50;
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+
+
+
+
+
+    .container-data-content > :nth-child(1) {
+        width: 10%;
+        text-align: center;
+        border-right: solid 1px #d7d8d3;
+    }
+
+    .container-data-content :nth-child(2) {
+        width: 15%;
+        text-align: center;
+        border-right: solid 1px #d7d8d3;
+    }
+
+    .container-data-content :nth-child(3) {
+        width: 25%;
+        border-right: solid 1px #d7d8d3;
+    }
+
+    .container-data-content :nth-child(4) {
+        width: 15%;
+        text-align: center;
+        word-wrap: break-word;
+        border-right: solid 1px #d7d8d3;
+        white-space: normal;
+    }
+
+    .container-data-content :nth-child(5) {
+        width: 20%;
+        text-align: center;
+        border-right: solid 1px #d7d8d3;
+    }
+
+    .container-data-content :nth-child(6) {
+        width: 10%;
+        text-align: center;
+        border-right: solid 1px #d7d8d3;
+    }
+
+    .container-data-content :nth-child(7) {
+        width: 5%;
+        text-align: center;
+    }
+
+
+
+    > .container-data-content > div > div {
+        padding: 10px;
+        text-transform: lowercase;
+
+
+        &:first-letter {
+            text-transform: uppercase;
+        }
+    }
+}
+
+

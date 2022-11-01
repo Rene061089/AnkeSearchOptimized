@@ -1,0 +1,97 @@
+﻿@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins/breakpoints";
+
+.container-outer.mobile {
+    .container {
+        width: 98%;
+        background-color: #e9e8e4;
+        color: #2c3e50;
+        line-height: 1.2rem;
+        max-width: 780px;
+
+        @include media-breakpoint-between(md,lg) {
+            width: 80%;
+        }
+    }
+
+    .container > div > div > div {
+        text-transform: lowercase;
+
+
+        &:first-letter {
+            text-transform: uppercase;
+        }
+    }
+
+    .row:nth-child(1) {
+        padding-top: 10px;
+        white-space: nowrap;
+    }
+
+    .row:nth-child(2) {
+        padding-top: 10px;
+    }
+
+    .row:nth-child(3) {
+        padding-top: 10px;
+        white-space: nowrap;
+    }
+
+    .row:nth-child(4) {
+        border-bottom: solid 2px #2d3e50;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+    .open-mobile-ruling {
+        cursor: pointer;
+        text-decoration-line: underline;
+    }
+
+    @include media-breakpoint-up(lg) {
+        display: none;
+    }
+
+    @include media-breakpoint-between(xs,md) {
+        display: contents;
+    }
+}
+
+// Removes the arrows, stars, and info madals.
+.row:nth-child(1) {
+    #container-arrow {
+        padding-top: 30px;
+
+        @include media-breakpoint-between(xs,lg) {
+            display: none;
+        }
+    }
+
+    .container-star {
+        padding-top: 30px;
+
+        @include media-breakpoint-between(xs,lg) {
+            display: none;
+        }
+    }
+}
+
+.row:not(:nth-child(1)) {
+    #container-arrow {
+        padding-top: 50px;
+
+        @include media-breakpoint-between(xs,lg) {
+            display: none;
+        }
+    }
+
+    .container-star {
+        padding-top: 50px;
+
+        @include media-breakpoint-between(xs,lg) {
+            display: none;
+        }
+    }
+}
+

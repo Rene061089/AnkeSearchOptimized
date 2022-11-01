@@ -114,6 +114,21 @@
   margin-top: 5%;
 }
 
+.filler-when-empty {
+  display: none;
+}
+.filler-when-empty.active {
+  display: block;
+  height: 200px;
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+}
+.filler-when-empty.active p {
+  text-align: center;
+  padding: 70px;
+}
+
 @keyframes bgcolor {
   0% {
     background-color: #2d3e50;
@@ -942,28 +957,6 @@ header .cell .container-header .container-list .rightContent2 ul li a:hover {
   margin-left: 10px;
 }
 
-/** {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-}*/
-/*.close:hover,
-.close:focus {*/
-/*color: #000;*/
-/*    text-decoration: none;
-    cursor: pointer;
-}*/
-/*body {*/
-/*   min-height: 100vh;
-   display: flex;
-   flex-direction: column;*/
-/*content {*/
-/*  .sticky {
-        position: fixed;
-        top: 0;
-        width: 80%;
-    }
-*/
 .container-outer.header {
   width: 96%;
   margin-left: auto;
@@ -1241,10 +1234,6 @@ header .cell .container-header .container-list .rightContent2 ul li a:hover {
   }
 }
 
-.row :nth-child(1) .container-outer.desktop:nth-child(1) {
-  padding-top: 0px;
-}
-
 .row:nth-child(1) #container-arrow {
   padding-top: 30px;
 }
@@ -1305,11 +1294,6 @@ header .cell .container-header .container-list .rightContent2 ul li a:hover {
   display: contents;
   font-size: 22px;
 }
-@media (max-width: 767.98px) {
-  .container-button-getRulings.ToManyRulings .user-be-more-specifik-text {
-    font-size: 16px;
-  }
-}
 .container-button-getRulings.ToManyRulings .getMoreRulings {
   display: none;
 }
@@ -1342,24 +1326,13 @@ header .cell .container-header .container-list .rightContent2 ul li a:hover {
   }
 }
 
-.filler-when-empty {
-  display: none;
-}
-.filler-when-empty.active {
-  display: block;
-  height: 200px;
-  width: 80%;
-  margin-right: auto;
-  margin-left: auto;
-}
-.filler-when-empty.active p {
-  text-align: center;
-  padding: 70px;
+.container-button-getRulings.ToManyRulings .user-be-more-specifik-text p {
+  font-size: 17px;
+  margin-bottom: 50px;
+  color: red;
+  font-weight: bold;
 }
 
-footer {
-  /*margin-top: 20px;*/
-}
 footer .first-footer {
   position: relative;
   display: flex;
@@ -1629,13 +1602,6 @@ footer .last-footer .container-last-footer .three-images .three p {
 .container-search-subscription .container-last-text h4 {
   font-size: 16px;
   font-style: italic;
-}
-
-.container-button-getRulings.ToManyRulings .user-be-more-specifik-text p {
-  font-size: 17px;
-  margin-bottom: 50px;
-  color: red;
-  font-weight: bold;
 }
 
 section {

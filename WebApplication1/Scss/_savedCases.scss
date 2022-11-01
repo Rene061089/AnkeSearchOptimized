@@ -166,3 +166,22 @@
         }
     }
 }
+
+
+.filler-when-empty {
+    display: none;
+
+    &.active {
+        display: block;
+        height: 200px;
+        width: 80%;
+        margin-right: auto;
+        margin-left: auto;
+
+
+        p {
+            text-align: center;
+            padding: 70px;
+        }
+    }
+}
