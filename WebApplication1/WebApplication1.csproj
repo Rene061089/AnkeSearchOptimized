@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Scss\bootstrap\" />
-    <Folder Include="Scss\Partials\" />
     <Folder Include="wwwroot\images\icons\" />
   </ItemGroup>
 

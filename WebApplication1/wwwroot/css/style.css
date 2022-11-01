@@ -1,9 +1,4 @@
 ﻿@charset "UTF-8";
-/** {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-}*/
 #containerData.savedRulingsHidden {
   display: contents;
 }
@@ -55,19 +50,6 @@
   margin-right: auto;
   margin-top: 20%;
 }
-
-#localSavedCases :nth-child(1) .container-star .star {
-  margin-top: 5%;
-}
-
-#localSavedCases :not(:nth-child(1)) #container-arrow .infoResume {
-  display: none;
-}
-
-#localSavedCases :nth-child(1) #container-arrow .arrow {
-  margin-top: 5%;
-}
-
 #localSavedCases #container-arrow .infoResume {
   height: 20px;
   width: 20px;
@@ -77,9 +59,6 @@
   cursor: pointer;
   margin-right: -14px;
   margin-left: auto;
-}
-#localSavedCases .row {
-  font-family: "PT Serif", serif;
 }
 #localSavedCases .row .arrow {
   height: 13px;
@@ -118,6 +97,23 @@
   text-align: center;
 }
 
+#localSavedCases :nth-child(1) .container-star .star {
+  margin-top: 5%;
+}
+
+#localSavedCases :not(:nth-child(1)) #container-arrow .infoResume {
+  display: none;
+}
+
+#localSavedCases :nth-child(1) #container-arrow .arrow {
+  margin-top: 5%;
+}
+
+/** {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}*/
 #containerData :not(:nth-child(1)) .container-star .infoStar {
   display: none;
 }
