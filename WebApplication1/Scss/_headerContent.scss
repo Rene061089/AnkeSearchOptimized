@@ -1,0 +1,132 @@
+﻿@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins/breakpoints";
+
+header {
+    .cell {
+        height: 100px;
+
+        .container-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            column-gap: 210px;
+            margin-top: 10px;
+
+            @include media-breakpoint-between(xs,md) {
+                justify-content: flex-start;
+            }
+
+            .headerHedline {
+                font-family: "PT Serif", serif;
+                font-size: 23px;
+                font-weight: 700;
+                color: #2c3e50;
+
+                @include media-breakpoint-between(xs,md) {
+                    display: none;
+                }
+            }
+
+
+            .container-list {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+
+
+                @include media-breakpoint-between(xs,lg) {
+                    align-items: flex-start;
+                }
+
+                .rightContent1 {
+                    display: flex;
+
+                    ul {
+                        display: flex;
+
+
+                        li:first-child {
+
+
+                            @include media-breakpoint-between(xs,lg) {
+                                margin-left: 0px;
+                            }
+                        }
+
+
+                        li {
+                            display: flex;
+                            list-style: none;
+                            margin-left: 15px;
+                            white-space: nowrap;
+
+
+                            a {
+                                font-family: "PT Serif", serif;
+                                font-size: 13px;
+                                font-weight: 300;
+                                font-style: italic;
+                                color: #7c838a;
+                                text-decoration: none;
+                                margin-top: 5px;
+                            }
+                        }
+                    }
+                }
+
+
+
+                .rightContent2 {
+                    //align-content: flex-end;
+
+                    ul {
+                        display: flex;
+
+                        li:before {
+                            content: "/";
+                            color: #d9d9d9;
+                            padding-left: 10px;
+                            padding-right: 10px;
+                        }
+
+                        li:first-child::before {
+                            content: "";
+
+                            @include media-breakpoint-between(xs,lg) {
+                                display: none;
+                            }
+                        }
+
+                        li {
+                            list-style: none;
+                            white-space: nowrap;
+
+                            a {
+
+                                @include media-breakpoint-between(xs,lg) {
+                                    font-size: 13px
+                                }
+
+                                text-transform: uppercase;
+                                font-size: 16px;
+                                font-family: "PT Serif", serif;
+                                font-weight: 700;
+                                color: #2c3e50;
+                                text-decoration: none;
+                            }
+
+                            a:active {
+                                text-decoration: underline;
+                            }
+
+                            a:hover {
+                                text-decoration: underline;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

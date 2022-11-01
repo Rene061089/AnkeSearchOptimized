@@ -1,38 +1,25 @@
-﻿
-// Hides all cases on "Gemte afgørelser" and shows only the saved cases. 
+﻿@keyframes bgcolor {
+    0% {
+        background-color: #2d3e50
+    }
+
+    100% {
+        background-color: #e9e8e4
+    }
+}
+
 #containerData {
-    &.savedRulingsHidden {
-        display: contents;
+    .container-outer.desktop > div:nth-last-child(n) {
+        -webkit-animation: bgcolor;
+        animation: bgcolor 500ms;
     }
 
-    &.savedRulingsHidden.closed {
-        display: none;
+    .remove-padding {
+        margin-right: auto;
+        margin-left: auto;
+        width: 80%;
     }
-}
-
-// Hides all saved cases on "Søgeresultat"   
-#localSavedCases {
-    &.savedRulings {
-        display: none;
-    }
-
-    &.savedRulings.open {
-        display: contents;
-    }
-}
-
-// Hides all starts information modals except the top saved case
-#localSavedCases :not(:nth-child(1)) {
-    .container-star {
-        .infoStar {
-            display: none;
-        }
-    }
-}
-
-
-#localSavedCases {
-    // Creates the info madal and alle the stars to save and unsave the cases.
+    // makes the info star modal
     .container-star {
         .infoStar {
             height: 20px;
@@ -45,32 +32,32 @@
             margin-left: -14px;
             margin-right: auto;
         }
-
-        .star {
-            height: 18px;
-            width: 18px;
-            cursor: pointer;
-            background-image: url("/images/icons/starGray.png");
-            background-size: contain;
-            background-repeat: no-repeat;
-            margin-left: -12px;
-            margin-right: auto;
-            margin-top: 20%;
-        }
-
-        .star.saved {
-            height: 18px;
-            width: 18px;
-            cursor: pointer;
-            background-image: url("/images/icons/starBlue.png");
-            background-size: contain;
-            background-repeat: no-repeat;
-            margin-left: -12px;
-            margin-right: auto;
-            margin-top: 20%;
-        }
     }
-    // Creates the info madal and alle the arrow to open an close all resumés
+    //makes the none saved starts
+    .star {
+        height: 18px;
+        width: 18px;
+        cursor: pointer;
+        background-image: url("/images/icons/starGray.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        margin-left: -12px;
+        margin-right: auto;
+        margin-top: 20%;
+    }
+    //makes the saved starts
+    .star.saved {
+        height: 18px;
+        width: 18px;
+        cursor: pointer;
+        background-image: url("/images/icons/starBlue.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        margin-left: -12px;
+        margin-right: auto;
+        margin-top: 20%;
+    }
+    // makes the arrow info modal
     #container-arrow {
         .infoResume {
             height: 20px;
@@ -83,7 +70,7 @@
             margin-left: auto;
         }
     }
-
+    //makes all the arrows and hides the summary
     .row {
         .arrow {
             height: 13px;
@@ -93,7 +80,7 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: right;
-            margin-right: -10px;
+            margin-right: -9px;
             margin-left: auto;
             margin-top: 20%;
         }
@@ -103,7 +90,9 @@
         }
     }
 
+    // rotates the arrow and displayes the summary
     .row.open {
+
         .arrow {
             transform: rotate(180deg);
         }
@@ -131,17 +120,9 @@
             text-align: center;
         }
     }
-
-    // remove the padding from the shown cases
-    .remove-padding {
-        margin-right: auto;
-        margin-left: auto;
-        width: 80%;
-    }
 }
 
-// Adjusts the right starts position on the top case
-#localSavedCases :nth-child(1) {
+#containerData :nth-child(1) {
     .container-star {
         .star {
             margin-top: 5%;
@@ -149,8 +130,8 @@
     }
 }
 
-// removes all info modals from the arrow except from the top case
-#localSavedCases :not(:nth-child(1)) {
+
+#containerData :not(:nth-child(1)) {
     #container-arrow {
         .infoResume {
             display: none;
@@ -158,11 +139,19 @@
     }
 }
 
-// Adjusts the right starts position on the top case
-#localSavedCases :nth-child(1) {
+#containerData :nth-child(1) {
     #container-arrow {
         .arrow {
             margin-top: 5%;
+        }
+    }
+}
+
+
+#containerData :not(:nth-child(1)) {
+    .container-star {
+        .infoStar {
+            display: none;
         }
     }
 }
