@@ -1,13 +1,9 @@
 ﻿@charset "UTF-8";
 /** {
-    outline: 1px solid #f00 !important;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }*/
-* {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-}
-
 #containerData.savedRulingsHidden {
   display: contents;
 }
