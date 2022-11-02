@@ -5,7 +5,7 @@
         type: "Post",
         data: {
             "fuzzy": true,
-             "term" : input
+            "term": input
         },
         dataType: "json",
         headers: {
@@ -19,7 +19,6 @@
         .done(function (data) {
             callback(data);
 
-
         })
         .fail(function () {
 
@@ -28,7 +27,6 @@
 }
 
 function autocomplete(input, callback) {
-
     $.ajax({
         url: "/api/case/autocomplete",
         type: "POST",
@@ -56,8 +54,7 @@ function autocomplete(input, callback) {
 }
 
 
-function search(obj, isNewSearch ,callback) {
-
+function search(obj, isNewSearch, callback) {
 
     if (uniqeSearchString !== JSON.stringify(obj)) {
         uniqeSearchString = JSON.stringify(obj);
@@ -73,34 +70,11 @@ function search(obj, isNewSearch ,callback) {
         return false;
     }
 
-  
-
-
-
-    //input = encodeURIComponent(input);
-    //rulings = encodeURIComponent(rulings);
-    console.log("hello");
-    console.log(obj);
-
-    //var wordsInOneSummary = "";
-    //var searchParamsForUrl = "*";
-    //if (input != "") {
-    //    var urlRequests = input.split(" ");
-    //    for (var i = 0; i < urlRequests.length; i++) {
-    //        wordsInOneSummary += urlRequests[i] + " + "
-    //    }
-    //     searchParamsForUrl = wordsInOneSummary.slice(0, -2);
-    //}
-    //var casesLoaded = 0;
-
-    //?& $orderby=CLOSED_DATE % 20desc
-    
-    console.log(obj);
     $.ajax({
         url: "/api/case/search",
         type: "POST",
         data: JSON.stringify(obj),
-        
+
         dataType: "json",
         contentType: "application/json",
         headers: {
@@ -125,7 +99,6 @@ function search(obj, isNewSearch ,callback) {
 
 
 function getRulingsByID(ids, callback) {
-
 
     if (Array.isArray(ids)) {
         if (ids.length > 0) {
@@ -163,32 +136,5 @@ function getRulingsByID(ids, callback) {
 
 }
 
-//function startSearch(input, callback) {
-
-//    $.ajax({
-//        url: "/api/case/autocomplete",
-//        type: "Post",
-//        data: {
-//            "term": ""
-//        },
-//        dataType: "json",
-//        headers: {
-//            "accept": "application/json",
-//            "Access-Control-Allow-Origin": "*",
-//        },
-//        beforeSend: function () {
-//            console.log("before");
-//        }
-//    })
-//        .done(function (data) {
-//            callback(data);
 
 
-//        })
-//        .fail(function () {
-
-//        })
-
-
-
-//}

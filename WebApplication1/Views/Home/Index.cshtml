@@ -1,580 +1,4 @@
-﻿
-<script type="text/javascript">
-
-    var pages = 1;
-    var uniqeSearchString = "";
-
-    console.log(pages);
-
-
-    function searchCallback(data) {
-        console.log("pages " + pages);
-
-
-        for (let i = 0; i < data.cases.length; i++) {
-
-
-            data.cases[i].DATE_FORMATED = formatDate(data.cases[i].closeD_DATE);
-            data.cases[i].principle = formatPK(data.cases[i].principle)
-            data.cases[i].searchWords = data.cases[i].searchWords;
-            data.cases[i].result = data.cases[i].result.trim();
-            console.log(data.cases[i].closeD_DATE);
-
-        }
-        //Selskab dropdown
-        for (let i = 0; i < data.fCompanyName.length; i++) {
-            data.fCompanyName[i].label = data.fCompanyName[i].name + " (" + data.fCompanyName[i].count + ")";
-            data.fCompanyName[i].value = data.fCompanyName[i].name;
-        }
-
-        for (let i = 0; i < data.fCompanyName.length; i++) {
-            document.querySelector('#companyNames').addOption(data.fCompanyName[i]);
-        }
-
-        //Type-forsikring dropdown
-        for (let i = 0; i < data.fInsuranceType.length; i++) {
-            data.fInsuranceType[i].label = data.fInsuranceType[i].name + " (" + data.fInsuranceType[i].count + ")";
-            data.fInsuranceType[i].value = data.fInsuranceType[i].name;
-        }
-
-        for (let i = 0; i < data.fInsuranceType.length; i++) {
-            document.querySelector('#insuranceType').addOption(data.fInsuranceType[i]);
-        }
-
-        var template = $("#datalist").html();
-        var rendered = Mustache.render(template, data);
-        $("#containerData").html(rendered);
-
-        $(".totalRulingsSpan").html(data.total);
-
-        //if (pages > 1 ) {
-        //document.getElementById("scrollToHere").scrollIntoView();
-        // }
-
-        setSavedStars();
-
-
-        //console.log(document.getElementById("fromDate_alt").value)
-    }
-
-
-    function getSavedCases() {
-
-        var cases = localStorage.getItem("caseNR");
-
-        if (cases === null) {
-            cases = [];
-        }
-        var numberSavedCases = 0;
-        var arrCases = [];
-
-        if (cases.length > 0) {
-            arrCases = cases.split(",");
-            numberSavedCases = arrCases.length;
-        }
-
-        $(".savedRulingsNumber").html(" (" + numberSavedCases + ")");
-
-        return arrCases;
-    }
-
-    function setSavedCase(caseNumber) {
-        var index = -1;
-        var arrCases = getSavedCases();
-        for (let i = 0; i < arrCases.length; i++) {
-            if (arrCases[i] == caseNumber)
-                index = i;
-        }
-        if (index === -1) {
-            arrCases.push(caseNumber);
-        } else {
-            arrCases.splice(index, 1);
-        }
-
-        localStorage.setItem("caseNR", arrCases.join(","))
-
-
-        if (localStorage.getItem("caseNR") == '') {
-            localStorage.removeItem("caseNR");
-        }
-        console.log(arrCases)
-    }
-
-
-
-    function setSavedStars() {
-
-        var savedCases = getSavedCases();
-
-
-        $(".saved-caseNumber").each(function() {
-            var isSaved = false;
-
-            for (let i = 0; i < savedCases.length; i++) {
-
-                if ($(this).text().trim() == savedCases[i]) {
-                    isSaved = true;
-                }
-            }
-            if (isSaved) {
-                $(this).closest(".row").find(".container-star .star").addClass("saved");
-            }
-            else {
-                $(this).closest(".row").find(".container-star .star").removeClass("saved");
-            }
-        })
-
-
-    }
-
-
-
-
-    function formatPK(PK) {
-
-        var no = "Nej"
-        var yes = "Ja"
-
-        if (PK == true) {
-            return yes;
-        } else {
-            return no;
-        }
-
-    }
-
-    function formatDate(d) {
-
-        var nd = new Date(d);
-        return ('0' + nd.getDate()).slice(-2) + '.' + ('0' + (nd.getMonth() + 1)).slice(-2) + '.' + nd.getFullYear();
-    }
-
-    function makeSearchString(arg) {
-
-        var argParams = arg.split(" ");
-        var wordsInOneSummary = "";
-
-        for (var i = 0; i < argParams.length; i++) {
-            wordsInOneSummary += argParams[i] + " + "
-
-        }
-        console.log("Words: " + wordsInOneSummary)
-        return (wordsInOneSummary.slice(0, -2));
-
-    }
-
-    function getDataObject() {
-        var postData = {
-            "words": $("#txtInputAutocomplete").val(),
-            "orderby": $(".container-header-content").data("orderby"),
-            "searchby": $(".container-header-content").data("searchby"),
-            "pages": pages,
-            "principal": $("#checkboxPK").is(":checked"),
-            "complaintsUpheld": $("#checkboxComplainantUpheld").is(":checked"),
-            "companyComplaintsUpheld": $("#checkboxCompanyUpheld").is(":checked"),
-            "complaintsPartlyUpheld": $("#checkboxComplainantPartialUpheld").is(":checked"),
-            "paragraph4": $("#checkboxComplaintDenied").is(":checked"),
-            "insuranceType": $("#insuranceType").val(),
-            "company": $("#companyNames").val(),
-            "from": $("#fromDate_alt").val(),
-            "to": $("#toDate_alt").val()
-
-
-        }
-
-        return postData;
-    }
-    function getRulingsByID_callback(data) {
-
-        if (!data) {
-            data = {
-                cases: []
-            };
-        }
-
-        for (let i = 0; i < data.cases.length; i++) {
-
-
-            data.cases[i].DATE_FORMATED = formatDate(data.cases[i].closeD_DATE);
-            data.cases[i].principle = formatPK(data.cases[i].principle)
-            data.cases[i].searchWords = data.cases[i].searchWords;
-            data.cases[i].result = data.cases[i].result.trim();
-            console.log(data.cases[i].closeD_DATE);
-
-        }
-        var template = $("#datalistsaved").html();
-        var rendered = Mustache.render(template, data);
-        $("#localSavedCases").html(rendered);
-
-        setSavedStars();
-
-
-    }
-
-    $(function() {
-
-
-
-
-        $(".container-header-content > div").on("click", function() {
-            var searchBy = $(this).attr("searchby");
-
-            var current = "";
-            if ($(this).hasClass("asc")) {
-                current = "asc";
-            }
-            else if ($(this).hasClass("desc")) {
-                current = "desc";
-            }
-
-            $(this).closest(".container-header-content").find(">div").removeClass("asc desc");
-
-            switch (current) {
-                //case "asc":
-                //    $(this).addClass("desc");
-                //    break;
-                case "desc":
-                    $(this).addClass("asc");
-                    break;
-                default:
-                    $(this).addClass("desc");
-                    break;
-            }
-            var orderBy = $(this).hasClass("desc") ? "desc" : "asc";
-
-            $(this).closest(".container-header-content").data("searchby", searchBy);
-            $(this).closest(".container-header-content").data("orderby", orderBy);
-
-            search(getDataObject(), false, searchCallback);
-
-        });
-
-        $(".getMoreRulings").on("click", function() {
-            pages = pages + 1;
-            var rulings = $(".totalRulingsSpan").html()
-            search(getDataObject(), false, searchCallback)
-
-            if (pages > 9) {
-                $(this).closest(".container-button-getRulings").addClass("ToManyRulings");
-            }
-
-            if (pages * 10 > rulings) {
-                $(this).closest(".container-button-getRulings").addClass("noMoreRulings");
-            }
-        });
-
-
-        VirtualSelect.init({
-
-            ele: '#companyNames',
-
-            //options: myOptions,
-            multiple: true,
-            placeholder: 'Vælg',
-            silentInitialValueSet: true,
-        });
-        VirtualSelect.init({
-            ele: '#insuranceType',
-            //options: myOptions,
-            multiple: true,
-            placeholder: 'Vælg',
-            silentInitialValueSet: true,
-        });
-
-
-        $("#containerData").on("click", ".row div.arrow", function() {
-            $(this).closest(".row").toggleClass("open");
-
-        });
-
-        $("#localSavedCases").on("click", ".row div.arrow", function() {
-            $(this).closest(".row").toggleClass("open");
-
-        });
-
-
-
-        $(".container-outer.header").on("click", ".open-close-all-resumées span", function() {
-            //TODO: Er det nødvendigt at sætte en klasse på begge id'er eller er der den smartere måde
-            $("#containerData .row").addClass("open");
-            $("#localSavedCases .row").addClass("open");
-            $(this).addClass("open");
-
-        });
-        $(".container-outer.header").on("click", ".open-close-all-resumées span.open", function() {
-            console.log("Click")
-            //TODO: Er det nødvendigt at sætte en klasse på begge id'er eller er der den smartere måde(DETTE ER I FORBINDELSE MED GEMTE SAGER)
-            $("#containerData .row").removeClass("open");
-            $("#localSavedCases .row").removeClass("open");
-
-            $(this).removeClass("open");
-        });
-
-
-
-        $("#containerData").on("click", ".row div.star", function() {
-            $(this).toggleClass("saved");
-
-            var itemToCheckFor = $(this).closest(".row").find(".saved-caseNumber").text();
-
-            setSavedCase(itemToCheckFor)
-            getSavedCases();
-        });
-
-        $("#localSavedCases").on("click", ".row div.star", function() {
-            $(this).toggleClass("saved");
-
-            var itemToCheckFor = $(this).closest(".row").find(".saved-caseNumber").text();
-            setSavedCase(itemToCheckFor)
-            getRulingsByID(getSavedCases(), getRulingsByID_callback);
-
-            if (getSavedCases().length == 0) {
-                console.log("One Time")
-                $(".goToSavedRulings").trigger("click");
-            }
-
-        });
-
-        $(".goToSavedRulings").on("click", function() {
-
-
-            getRulingsByID(getSavedCases(), getRulingsByID_callback);
-            $(".savedRulingsHidden").addClass("closed");
-            $(".savedRulings").addClass("open");
-
-            $(".goToSearchResult").removeClass("active");
-            $(".goToSavedRulings").addClass("active")
-
-            $(".totalRulings").addClass("active")
-
-            $(".container-search-subscription").addClass("active")
-
-            $(".container-button-getRulings").addClass("active")
-            $(".container-text-under-getMoreRulingsButton").addClass("active")
-
-
-            if (getSavedCases().length == 0) {
-                $(".filler-when-empty").addClass("active")
-            }
-
-
-
-        });
-
-
-        $(".goToSearchResult").on("click", function() {
-
-            //$(".goToSearchResult").addClass("active");
-            $(".goToSearchResult").addClass("active");
-            $(".goToSavedRulings").removeClass("active")
-            $(".starImage").removeClass("active")
-
-            $(".savedRulingsHidden").removeClass("closed");
-            $(".savedRulings").removeClass("open");
-
-            $(".totalRulings").removeClass("active")
-
-            $(".container-search-subscription").removeClass("active")
-
-            $(".container-button-getRulings").removeClass("active")
-            $(".container-text-under-getMoreRulingsButton").removeClass("active")
-
-            $(".filler-when-empty").removeClass("active")
-
-
-        });
-
-
-
-        $(".removeAllSavedCases").on("click", function() {
-
-            //$("#localSavedCases .row .container-star .star").removeClass("saved")
-            //$("#containerData .row .container-star .star").removeClass("saved")
-
-            localStorage.removeItem("caseNR")
-            getRulingsByID(getSavedCases(), getRulingsByID_callback);
-
-        });
-
-        $(".modalSaveCase").on("click", function() {
-
-
-            var itemToCheckFor = $(".modal-header").find("#modal-caseNumber").text();
-            setSavedCase(itemToCheckFor)
-            getRulingsByID(getSavedCases(), getRulingsByID_callback);
-        });
-
-
-
-        $("#containerData").on("click", ".container-outer.mobile ", function() {
-
-            var da = $(this).closest('div').find(".dato-modal").text()
-            var su = $(this).closest('div').find(".summary-modal").text()
-            var re = $(this).closest('div').find(".result-modal").text()
-            var cNu = $(this).closest('div').find(".caseNumber-modal").text()
-            var sw = $(this).closest('div').find(".searchWords-modal").text()
-            var cNa = $(this).closest('div').find(".companyName-modal").text()
-            var it = $(this).closest('div').find(".insuranceType-modal").text()
-            var pk = $(this).closest('div').find(".principle-modal").text()
-
-            $("#modal-dato").html(da)
-            $("#modal-summary").html(su)
-            $("#modal-result").html(re)
-            $("#modal-caseNumber").html(cNu)
-            $("#modal-searchWords").html(sw)
-            $("#modal-companyName").html(cNa)
-            $("#modal-insuranceType").html(it)
-            $("#modal-principle").html(pk)
-
-        });
-
-        $("#localSavedCases").on("click", ".container-outer.mobile ", function() {
-
-            var da = $(this).closest('div').find(".dato-modal").text()
-            var su = $(this).closest('div').find(".summary-modal").text()
-            var re = $(this).closest('div').find(".result-modal").text()
-            var cNu = $(this).closest('div').find(".caseNumber-modal").text()
-            var sw = $(this).closest('div').find(".searchWords-modal").text()
-            var cNa = $(this).closest('div').find(".companyName-modal").text()
-            var it = $(this).closest('div').find(".insuranceType-modal").text()
-            var pk = $(this).closest('div').find(".principle-modal").text()
-
-            $("#modal-dato").html(da)
-            $("#modal-summary").html(su)
-            $("#modal-result").html(re)
-            $("#modal-caseNumber").html(cNu)
-            $("#modal-searchWords").html(sw)
-            $("#modal-companyName").html(cNa)
-            $("#modal-insuranceType").html(it)
-            $("#modal-principle").html(pk)
-
-        });
-
-
-
-
-
-
-        $("#btngetsuggest").on("click", function() {
-            suggest($("#txtinputsuggest").val(), suggestcallback);
-
-        });
-
-
-
-        $(".first-cbox-row > input").on("click", function() {
-            $("#btnAutocomplete").trigger("click");
-
-        });
-
-        $(".second-cbox-row > input").on("click", function() {
-            $("#btnAutocomplete").trigger("click");
-        });
-
-        $("#txtInputAutocomplete").on("keypress", function(event) {
-            if (event.which == 13) {
-
-                $("#btnAutocomplete").trigger("click");
-                $("#txtInputAutocomplete").autocomplete("close");
-
-            }
-        });
-
-
-        $("#btnAutocomplete").on("click", function() {
-            search(getDataObject(), true, searchCallback);
-        });
-
-        $("#resetSearch").on("click", function() {
-
-            document.getElementById("txtInputAutocomplete").value = "";
-            $(".search-box-label input[type=checkbox]").prop('checked', false);
-
-            if ($(".container-button-getRulings").hasClass("noMoreRulings")) {
-                $(".container-button-getRulings").removeClass("noMoreRulings")
-            }
-            if ($(".container-button-getRulings").hasClass("ToManyRulings")) {
-                $(".container-button-getRulings").removeClass("ToManyRulings")
-            }
-
-            $("#fromDate").val("");
-            $("#fromDate_alt").val("");
-            $("#toDate").val("");
-            $("#toDate_alt").val("");
-
-            pages = 1;
-            search(getDataObject(), true, searchCallback);
-
-        });
-
-
-
-
-        $("#txtInputAutocomplete").autocomplete({
-            source: function(request, response) {
-
-                $.ajax({
-                    url: "/api/case/autocomplete",
-                    dataType: "json",
-                    headers: {
-                        "accept": "application/json",
-                        "Access-Control-Allow-Origin": "*"
-                    },
-                    data: {
-                        "term": $("#txtInputAutocomplete").val()
-                    },
-                    success: function(data) {
-                        response(data)
-
-                    }
-                });
-
-            },
-            minLength: 3,
-            select: function(event, ui) {
-                event.preventDefault();
-                console.log("Selected: ", ui.item.label);
-                $("#txtInputAutocomplete").val(ui.item.label);
-
-                search(getDataObject(), true, searchCallback);
-            }
-        }).autocomplete("instance")._renderItem = function(ul, item) {
-            return $("<li>")
-                .append("<div>" + item.label + "</div>")
-                .appendTo(ul);
-        };
-
-
-
-        $("#fromDate").datepicker({
-            dateFormat: "dd-mm-yy",
-            altFormat: "yy-mm-dd",
-            altField: "#fromDate_alt",
-        }).inputmask("99-99-9999").on("keypress", function(e) {
-            if (e.which == 13) {
-                $("#btnAutocomplete").trigger("click");
-            }
-        });
-
-        $("#toDate").datepicker({
-            dateFormat: "dd-mm-yy",
-            altFormat: "yy-mm-dd",
-            altField: "#toDate_alt"
-    }).inputmask("99-99-9999").on("keypress", function(e) {
-            if (e.which == 13) {
-                $("#btnAutocomplete").trigger("click");
-            }
-        });
-
-
-
-    //Her Kalder jeg search første gang.
-    search(getDataObject(), true, searchCallback);
-
-                    })
-
-</script>
-
+﻿@*First body section with the logo and background pic*@
 <section>
     <div class="inner">
         <div class="cell">
@@ -595,6 +19,7 @@
     </div>
 </section>
 
+@*Second body section with all search params*@
 <section>
     <div class="inner">
         <div class="cell">
@@ -653,7 +78,7 @@
                             </div>
                         </div>
                         <div class="col col-sm-6 col-lg-3 startBoxSize">
-                            <div >
+                            <div>
                                 <lable class="start-date-lable" for="startdate">Datointerval fra:</lable>
                                 <br>
                                 <input class="start-date" type="text" id="fromDate" />
@@ -661,7 +86,7 @@
                             </div>
                         </div>
                         <div class="col col-sm-6 col-lg-3">
-                            <div >
+                            <div>
                                 <lable class="end-date-lable" for="startdate">Til:</lable>
                                 <br>
                                 <input class="end-date" type="text" id="toDate" />
@@ -689,7 +114,7 @@
     </div>
 </section>
 
-
+@*Third body section with all containerData and localSavedCases*@
 <section>
     <div class="inner">
         <div class="cell">
@@ -751,6 +176,7 @@
     </div>
 </section>
 
+@*Fourth body section containing the opotunity to subscribe on a search*@
 <section>
     <div class="inner">
         <div class="cell">
@@ -779,11 +205,10 @@
     </div>
 </section>
 
+@*This section is for all modals on the page, the ID descripes what it does*@
 <section>
     <inner>
         <cell>
-
-
             <!-- Modal -->
             <div class="modal" id="mobile-Modal" tabindex="-1">
                 <div class="modal-dialog">
@@ -839,6 +264,7 @@
                 </div>
             </div>
             <!-- Modal slut -->
+
             <!-- Modal -->
             <div class="modal" id="info-star-Modal" tabindex="-1">
                 <div class="modal-dialog">
@@ -858,6 +284,7 @@
                 </div>
             </div>
             <!-- Modal slut -->
+
             <!-- Modal -->
             <div class="modal" id="info-resume-Modal" tabindex="-1">
                 <div class="modal-dialog">
@@ -873,6 +300,7 @@
                 </div>
             </div>
             <!-- Modal slut -->
+
             <!-- Modal -->
             <div class="modal" id="subscrip-exemple-modal" tabindex="-1">
                 <div class="modal-dialog">
@@ -887,12 +315,12 @@
                 </div>
             </div>
             <!-- Modal slut -->
-
         </cell>
     </inner>
 </section>
 
 
+@*This is the containerData Template*@
 <script type="template/text" id="datalist">
      {{#cases}}
        <div class="row g-0">
@@ -920,7 +348,6 @@
            <div class="col-lg-1 col-md-1 col-sm-1 container-star"> <div class="infoStar" data-bs-toggle="modal" data-bs-target="#info-star-Modal"></div><div id="starid" class="star" ></div></div>
        </div>
 
-
        <div class="container-outer mobile">
            <div class="container">
                <div class="row">
@@ -935,8 +362,6 @@
                  <div class="col col-sm-4">
                     <strong><div>Kendelsesnr.</div></strong>
                     <div class="caseNumber-modal">{{casE_NUMBER}}</div>
-    @*Button trigger modal *@
-    @*<div class="open-mobile-ruling" data-bs-toggle="modal" data-bs-target="#mobile-Modal"><p>Åben afgørelse</p></div>*@
                  </div>
                  </div>
                  <div class="row">
@@ -964,22 +389,14 @@
                     <strong><div >Emneord</div></strong>
                     <div class="searchWords-modal">{{searchWords}}</div>
                  </div>
-
                  <div class="summary-modal" style="display:none">{{summary}}</div>
-    @*<div class="searchWords-modal" style="display:none">{{searchWords}}</div>*@
-    @*<div class="companyName-modal" style="display:none">{{companyName}}</div>*@
-    @*<div class="principle-modal" style="display:none">{{principle}}</div>*@
-    @*<div class="insuranceType-modal" style="display:none">{{insuranceType}}</div>*@
-
-
                </div>
            </div>
        </div>
-
     {{/cases}}
-
-
 </script>
+
+@*This i the localSavedCases Template*@
 <script type="template/text" id="datalistsaved">
      {{#cases}}
        <div class="row g-0">
@@ -1007,7 +424,6 @@
            <div class="col-lg-1 col-md-1 col-sm-1 container-star"> <div class="infoStar" data-bs-toggle="modal" data-bs-target="#info-star-Modal"></div><div id="starid" class="star" ></div></div>
        </div>
 
-
        <div class="container-outer mobile">
            <div class="container">
                <div class="row">
@@ -1022,8 +438,6 @@
                  <div class="col col-sm-4">
                     <strong><div>Kendelsesnr.</div></strong>
                     <div class="caseNumber-modal">{{casE_NUMBER}}</div>
-    @*Button trigger modal *@
-    @*<div class="open-mobile-ruling" data-bs-toggle="modal" data-bs-target="#mobile-Modal"><p>Åben afgørelse</p></div>*@
                  </div>
                  </div>
                  <div class="row">
@@ -1051,20 +465,10 @@
                     <strong><div >Emneord</div></strong>
                     <div class="searchWords-modal">{{searchWords}}</div>
                  </div>
-
                  <div class="summary-modal" style="display:none">{{summary}}</div>
-    @*<div class="searchWords-modal" style="display:none">{{searchWords}}</div>*@
-    @*<div class="companyName-modal" style="display:none">{{companyName}}</div>*@
-    @*<div class="principle-modal" style="display:none">{{principle}}</div>*@
-    @*<div class="insuranceType-modal" style="display:none">{{insuranceType}}</div>*@
-
-
                </div>
            </div>
        </div>
-
     {{/cases}}
-
-
 </script>
 
