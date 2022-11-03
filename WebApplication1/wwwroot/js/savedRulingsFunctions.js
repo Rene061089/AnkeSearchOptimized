@@ -1,4 +1,5 @@
-﻿
+﻿// This file contains all functions that handles how to save a ruling. 
+
 function getSavedCases() {
     var cases = localStorage.getItem("caseNR");
 

@@ -1,4 +1,6 @@
-﻿function formatPK(PK) {
+﻿//This is a small file where my fomat functions is, maby it will be bigger.
+
+function formatPK(PK) {
 
     var no = "Nej"
     var yes = "Ja"

@@ -1,4 +1,6 @@
-﻿function suggest(input, callback) {
+﻿// in this file is all functions who calls the backends api's
+
+function suggest(input, callback) {
 
     $.ajax({
         url: "/api/case/suggest",

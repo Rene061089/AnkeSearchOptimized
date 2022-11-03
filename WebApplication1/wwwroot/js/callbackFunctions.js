@@ -1,4 +1,6 @@
-﻿var pages = 1;
+﻿// in this file is where all funktions that handles the data from the callAPIFunctions and where the data object that is sent to the Search API i assembled 
+
+var pages = 1;
 var uniqeSearchString = "";
 
 function searchCallback(data) {
