@@ -1,8 +1,6 @@
 ﻿namespace WebApplication1.BusinessLogic
     {
-    //public class postClass
-    //{
-    //}
+   
 
     public class PostSearch
         {

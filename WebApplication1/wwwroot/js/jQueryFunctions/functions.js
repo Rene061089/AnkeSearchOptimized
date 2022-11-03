@@ -1,6 +1,6 @@
 ﻿
 $(function () {
-
+    //Gets 10 more rulings until rulings == 100.
 $(".getMoreRulings").on("click", function () {
     pages = pages + 1;
     var rulings = $(".totalRulingsSpan").html()
@@ -15,11 +15,11 @@ $(".getMoreRulings").on("click", function () {
     }
 });
 
-
+    // adds a class to one of the headers in the rulings, so you can sort on each of them.
     $(".container-header-content > div").on("click", function () {
         var searchBy = $(this).attr("searchby");
-
         var current = "";
+
         if ($(this).hasClass("asc")) {
             current = "asc";
         }
@@ -49,11 +49,9 @@ $(".getMoreRulings").on("click", function () {
 
     });
 
-
+    // crates the two custom dropdowns Compamies and Incurancetypes 
     VirtualSelect.init({
-
         ele: '#companyNames',
-
         //options: myOptions,
         multiple: true,
         placeholder: 'Vælg',
@@ -68,61 +66,54 @@ $(".getMoreRulings").on("click", function () {
     });
 
 
+    // open and closes the summary by the arrow
     $("#containerData").on("click", ".row div.arrow", function () {
         $(this).closest(".row").toggleClass("open");
 
     });
 
+    // open and closes the summary by the arrow
     $("#localSavedCases").on("click", ".row div.arrow", function () {
         $(this).closest(".row").toggleClass("open");
 
     });
 
-
+    // open all summeries
     $(".container-outer.header").on("click", ".open-close-all-resumées span", function () {
-        //TODO: Er det nødvendigt at sætte en klasse på begge id'er eller er der den smartere måde
         $("#containerData .row").addClass("open");
         $("#localSavedCases .row").addClass("open");
         $(this).addClass("open");
 
     });
+    // closes all sommeries
     $(".container-outer.header").on("click", ".open-close-all-resumées span.open", function () {
-        console.log("Click")
-        //TODO: Er det nødvendigt at sætte en klasse på begge id'er eller er der den smartere måde(DETTE ER I FORBINDELSE MED GEMTE SAGER)
         $("#containerData .row").removeClass("open");
         $("#localSavedCases .row").removeClass("open");
-
         $(this).removeClass("open");
     });
 
-
+    // Saves and unsave cases by pressing the star
     $("#containerData").on("click", ".row div.star", function () {
         $(this).toggleClass("saved");
-
         var itemToCheckFor = $(this).closest(".row").find(".saved-caseNumber").text();
-
         setSavedCase(itemToCheckFor)
         getSavedCases();
     });
 
-
+    // unsaves the cases on the saved cases page.
     $("#localSavedCases").on("click", ".row div.star", function () {
         $(this).toggleClass("saved");
-
         var itemToCheckFor = $(this).closest(".row").find(".saved-caseNumber").text();
         setSavedCase(itemToCheckFor)
         getRulingsByID(getSavedCases(), getRulingsByID_callback);
-
         if (getSavedCases().length == 0) {
             console.log("One Time")
             $(".goToSavedRulings").trigger("click");
         }
-
     });
 
 
     $(".goToSavedRulings").on("click", function () {
-
 
         getRulingsByID(getSavedCases(), getRulingsByID_callback);
         $(".savedRulingsHidden").addClass("closed");
@@ -138,13 +129,11 @@ $(".getMoreRulings").on("click", function () {
         $(".container-button-getRulings").addClass("active")
         $(".container-text-under-getMoreRulingsButton").addClass("active")
 
-
         if (getSavedCases().length == 0) {
             $(".filler-when-empty").addClass("active")
         }
 
     });
-
 
 
     $(".goToSearchResult").on("click", function () {
@@ -172,23 +161,20 @@ $(".getMoreRulings").on("click", function () {
 
     $(".removeAllSavedCases").on("click", function () {
 
-        //$("#localSavedCases .row .container-star .star").removeClass("saved")
-        //$("#containerData .row .container-star .star").removeClass("saved")
-
         localStorage.removeItem("caseNR")
         getRulingsByID(getSavedCases(), getRulingsByID_callback);
 
     });
 
+    // Here you can save the case by the mobile modal
     $(".modalSaveCase").on("click", function () {
-
 
         var itemToCheckFor = $(".modal-header").find("#modal-caseNumber").text();
         setSavedCase(itemToCheckFor)
         getRulingsByID(getSavedCases(), getRulingsByID_callback);
     });
 
-
+    // This makes all the data for the mobile/tablet modal on the searchsite.
     $("#containerData").on("click", ".container-outer.mobile ", function () {
 
         var da = $(this).closest('div').find(".dato-modal").text()
@@ -210,7 +196,7 @@ $(".getMoreRulings").on("click", function () {
         $("#modal-principle").html(pk)
 
     });
-
+    // This makes all the html data for the mobile/tablet modal on the saved cases site.
     $("#localSavedCases").on("click", ".container-outer.mobile ", function () {
 
         var da = $(this).closest('div').find(".dato-modal").text()
@@ -233,35 +219,33 @@ $(".getMoreRulings").on("click", function () {
 
     });
 
-    $("#btngetsuggest").on("click", function () {
-        suggest($("#txtinputsuggest").val(), suggestcallback);
-
-    });
-
-
-
+    // this trigger a click on the searchbutton when you click on a checkbox
     $(".first-cbox-row > input").on("click", function () {
         $("#btnAutocomplete").trigger("click");
 
     });
 
+    // this trigger a click on the searchbutton when you click on a checkbox
     $(".second-cbox-row > input").on("click", function () {
         $("#btnAutocomplete").trigger("click");
     });
 
+    // This make it posible to make a search by pressing Enter after somting is typed in the free-text-field.  
     $("#txtInputAutocomplete").on("keypress", function (event) {
         if (event.which == 13) {
-
             $("#btnAutocomplete").trigger("click");
             $("#txtInputAutocomplete").autocomplete("close");
 
         }
     });
 
+
+    //this is the search button
     $("#btnAutocomplete").on("click", function () {
         search(getDataObject(), true, searchCallback);
     });
 
+    //This is the reset button
     $("#resetSearch").on("click", function () {
 
         document.getElementById("txtInputAutocomplete").value = "";
@@ -284,6 +268,8 @@ $(".getMoreRulings").on("click", function () {
 
     });
 
+
+    //this makes one of the custom date by datepicker
     $("#fromDate").datepicker({
         dateFormat: "dd-mm-yy",
         altFormat: "yy-mm-dd",
@@ -294,6 +280,7 @@ $(".getMoreRulings").on("click", function () {
         }
     });
 
+    //this makes one of the custom date by datepicker
     $("#toDate").datepicker({
         dateFormat: "dd-mm-yy",
         altFormat: "yy-mm-dd",
@@ -304,7 +291,7 @@ $(".getMoreRulings").on("click", function () {
         }
     });
 
-
+    // This calls autocomplete when you type in a word with at length over 3.  
     $("#txtInputAutocomplete").autocomplete({
         source: function (request, response) {
 
