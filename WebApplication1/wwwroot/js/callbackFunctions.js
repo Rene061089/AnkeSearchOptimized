@@ -44,6 +44,9 @@ function searchCallback(data) {
 
     setSavedStars();
 
+    //Skal slettes senere, bliver kun brugt til at teste at siden bliver reloadet på ny
+    randomNumbers();
+
 }
 
 function getRulingsByID_callback(data) {

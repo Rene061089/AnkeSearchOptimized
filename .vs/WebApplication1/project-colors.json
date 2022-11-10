@@ -15,7 +15,12 @@
       "ProjectGuid": "919fd655-f067-4ba2-b932-d926e85dd6b4",
       "DisplayName": "Script Documents",
       "ColorIndex": 1
+    },
+    "738409ec-1d57-4553-a452-f3d465564ffd": {
+      "ProjectGuid": "738409ec-1d57-4553-a452-f3d465564ffd",
+      "DisplayName": "SearchEngine.UITests",
+      "ColorIndex": 2
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 3
 }
