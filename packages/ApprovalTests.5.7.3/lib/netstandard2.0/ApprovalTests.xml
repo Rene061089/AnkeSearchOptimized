@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ApprovalTests</name>
+    </assembly>
+    <members>
+        <member name="M:ApprovalTests.Approvals.UseAssemblyLocationForApprovedFiles">
+            <summary>
+            This is sometimes needed on CI systems that move/remove the original source.
+            If you use this you will also need to set the .approved. files to "Copy Always"
+            and if you use subdirectories you'll need a post-build command like
+            copy /y $(ProjectDir)**subfolder**\*.approved.txt $(TargetDir)
+            </summary>
+        </member>
+        <member name="T:ApprovalTests.Asp.MovedToSeparateNugetPackage">
+            <summary>
+            These classes have all been moved to a separate Nuget Package.
+            Simply add ApprovalTests.Asp
+            </summary>
+        </member>
+        <member name="P:ApprovalTests.Core.IApprovalNamer.SourcePath">
+            <summary>
+            Full directory path of the source file.
+            </summary>
+        </member>
+        <member name="P:ApprovalTests.Core.IApprovalNamer.Name">
+            <summary>
+            Name without extension. For example 'MyClass.MyMethod'.
+            </summary>
+        </member>
+        <member name="M:ApprovalTests.Core.IApprovalApprover.Approve">
+            <summary>
+                Called to verify.
+                Should save the received resource and compare.
+            </summary>
+            <remarks>
+                Note: This is part 1 of a 2 part call : if (Approve()) {Fail()}
+                To allow for the reporter to interject and approve in the interim
+            </remarks>
+            <returns>  true if Matching, false if not</returns>
+        </member>
+        <member name="M:ApprovalTests.Core.IApprovalApprover.Fail">
+            <summary>
+                Called if Approve() returned false and
+                the reporter did not Self-Approve via  .ApprovedWhenReported()
+                Usually throws an some sort of Exception
+            </summary>
+            <remarks>
+                Note: This is part 1 of a 2 part call : if (Approve()) {Fail()}
+                To allow for the reporter to interject and approve in the interim
+            </remarks>
+        </member>
+        <member name="M:ApprovalTests.Html.HtmlApprovals.VerifyHtmlStrict(System.String)">
+            <summary>
+            Throws exception if Html is incorrectly formatted
+            </summary>
+        </member>
+        <member name="M:ApprovalTests.Maintenance.ApprovalMaintenance.CleanUpAbandonedFiles">
+            <summary>
+            ** Warning : use at your own risk **
+            Deletes any files that may have been abandoned.
+            </summary>
+            <returns> List of deleted files</returns>
+        </member>
+        <member name="M:ApprovalTests.Xml.XmlApprovals.VerifyText(System.String,System.String,System.Boolean,System.Func{System.String,System.String})">
+            <summary>
+            	Throws exception if Xml is incorrectly formatted
+            </summary>
+        </member>
+    </members>
+</doc>
