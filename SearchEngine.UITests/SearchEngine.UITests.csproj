@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="HTMLInteractionTestClass.cs" />
     <Compile Include="JavaScriptTestClass.cs" />
+    <Compile Include="PageObjectModels\HomePage.cs" />
     <Compile Include="SmokeTestClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelper.cs" />
@@ -128,6 +129,7 @@
   <ItemGroup>
     <Content Include="SmokeTestClass.ScreenShotHomePage.approved.bmp" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

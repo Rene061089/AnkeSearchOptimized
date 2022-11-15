@@ -5,13 +5,14 @@ using OpenQA.Selenium.Chrome;
 using System.Collections.ObjectModel;
 using OpenQA.Selenium.Support.UI;
 using Xunit.Abstractions;
+using SearchEngine.UITests.PageObjectModels;
 
 namespace SearchEngine.UITests
 {
     [Trait("Category", "Applications")]
     public class HTMLInteractionTestClass
     {
-        private const string HomeUrl = "https://localhost:7017/";
+        
         private const string PrivateUrl = "https://localhost:7017/Home/Privacy/";
 
 
@@ -30,7 +31,8 @@ namespace SearchEngine.UITests
             using (IWebDriver driver = new ChromeDriver())
             {
 
-                driver.Navigate().GoToUrl(HomeUrl);
+                var homePage = new HomePage(driver);
+                homePage.NavigateTo();
                 TestHelper.Pause();
                 IWebElement privacyLink = driver.FindElement(By.Name("ToPortal"));
                 privacyLink.Click();
@@ -48,7 +50,8 @@ namespace SearchEngine.UITests
             using (IWebDriver driver = new ChromeDriver())
             {
 
-                driver.Navigate().GoToUrl(HomeUrl);
+                var homePage = new HomePage(driver);
+                homePage.NavigateTo();
                 TestHelper.Pause();
                 IWebElement privacyLinkByLinkText = driver.FindElement(By.LinkText("Log på portal"));
                 privacyLinkByLinkText.Click();
@@ -67,7 +70,8 @@ namespace SearchEngine.UITests
             using (IWebDriver driver = new ChromeDriver())
             {
 
-                driver.Navigate().GoToUrl(HomeUrl);
+                var homePage = new HomePage(driver);
+                homePage.NavigateTo();
                 TestHelper.Pause();
                 IWebElement privacyLinkByClassName = driver.FindElement(By.ClassName("ToPortalClass"));
                 privacyLinkByClassName.Click();
@@ -85,8 +89,9 @@ namespace SearchEngine.UITests
         {
             using (IWebDriver driver = new ChromeDriver())
             {
-
-                driver.Navigate().GoToUrl(HomeUrl);
+                var homePage = new HomePage(driver);
+                homePage.NavigateTo();
+                
                 TestHelper.Pause();
                 driver.Manage().Window.Maximize();
                 IWebElement headerNameCell = driver.FindElement(By.ClassName("header-dato"));
@@ -105,10 +110,12 @@ namespace SearchEngine.UITests
             using (IWebDriver driver = new ChromeDriver())
             {
 
-                driver.Navigate().GoToUrl(HomeUrl);
-                //TestHelper.Pause();
+                var homePage = new HomePage(driver);
+                homePage.NavigateTo();
                 driver.Manage().Window.Maximize();
-                ReadOnlyCollection<IWebElement> headerNameCells = driver.FindElements(By.XPath("//*[@id='myHeader']/div[2]/div"));
+                
+
+                ReadOnlyCollection<IWebElement> headerNameCells = homePage.TableHeaders;
                 TestHelper.Pause();
 
                 Assert.Equal("Dato", headerNameCells[0].Text);
@@ -128,9 +135,9 @@ namespace SearchEngine.UITests
         {
             using (IWebDriver driver = new ChromeDriver())
             {
-
-                output.WriteLine($"{DateTime.Now.ToLongTimeString()} Navigate to '{HomeUrl}'");
-                driver.Navigate().GoToUrl(HomeUrl);
+                var homePage = new HomePage(driver);
+                //output.WriteLine($"{DateTime.Now.ToLongTimeString()} Navigate to '{HomeUrl}'");
+                homePage.NavigateTo();
                 driver.Manage().Window.Maximize();
                 TestHelper.Pause();
                 output.WriteLine($"{DateTime.Now.ToLongTimeString()} Typing in value to input text field");
