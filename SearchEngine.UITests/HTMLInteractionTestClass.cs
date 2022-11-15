@@ -168,6 +168,7 @@ namespace SearchEngine.UITests
                 driver.FindElement(By.Id("toDate")).SendKeys("26062012");
                 //TestHelper.Pause(2000);
                 output.WriteLine($"{DateTime.Now.ToLongTimeString()} Submitting the form");
+                TestHelper.Pause(2000);
                 driver.FindElement(By.Id("btnAutocomplete")).Click();
 
                 Assert.Equal("25.06.2012", driver.FindElement(By.ClassName("saved-date")).Text);
