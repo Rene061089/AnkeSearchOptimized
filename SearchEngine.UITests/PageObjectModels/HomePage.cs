@@ -27,6 +27,8 @@ namespace SearchEngine.UITests.PageObjectModels
         //
         public string GenerationToken => Driver.FindElement(By.ClassName("saved-caseNumber")).Text;
         public void ClickfrequentlyAskedQuestionsLink() => Driver.FindElement(By.Name("frequentlyAskedQuestions")).Click();
+        public void MaximizeBrowserWindow() => Driver.Manage().Window.Maximize();
+
 
         public void NavigateTo()
         {
@@ -34,9 +36,20 @@ namespace SearchEngine.UITests.PageObjectModels
             EnsurePageHasLoaded();
         }
 
-        public void EnsurePageHasLoaded()
+        public void EnsurePageHasLoaded(bool onlyCheckStartOfTheUrlText = true)
         {
-            bool ensurePageHasLoaded = (Driver.Url == PageUrl ) && (Driver.Title == PageTitle);
+
+            bool urlIsCorrect;
+            if(onlyCheckStartOfTheUrlText)
+            {
+                urlIsCorrect = Driver.Url.StartsWith(PageUrl);
+            }
+            else
+            {
+                urlIsCorrect = Driver.Url == PageUrl;
+            }
+
+            bool ensurePageHasLoaded = urlIsCorrect && (Driver.Title == PageTitle);
 
             if (!ensurePageHasLoaded)
             {

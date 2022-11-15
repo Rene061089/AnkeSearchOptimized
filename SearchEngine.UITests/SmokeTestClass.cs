@@ -29,58 +29,10 @@ namespace SearchEngine.UITests
 
                 var homePage = new HomePage(driver);
                 homePage.NavigateTo();
-
       
             }
         }
 
-
-        [Fact]
-        [Trait("Category","smoke")]
-        public void ManipulatinBrowserWindowSize() 
-        {
-            using (IWebDriver driver = new ChromeDriver()) 
-            {
-                
-                driver.Navigate().GoToUrl(HomeUrl);
-                TestHelper.Pause(2000);
-                driver.Manage().Window.Maximize();
-                TestHelper.Pause(2000);
-                driver.Manage().Window.Minimize();
-                TestHelper.Pause(2000);
-                driver.Manage().Window.Size = new System.Drawing.Size(300, 400);
-                TestHelper.Pause(2000);
-                driver.Manage().Window.Position = new System.Drawing.Point(0,0);
-                TestHelper.Pause(2000);
-                driver.Manage().Window.Position = new System.Drawing.Point(50, 50);
-                TestHelper.Pause(2000);
-                driver.Manage().Window.Position = new System.Drawing.Point(100, 100);
-                TestHelper.Pause(2000);
-                driver.Manage().Window.FullScreen();
-                TestHelper.Pause(2000);
-
-                //Skal fjernes. Denne bliver kun brugt til at sætte et delay, så man kan se hvad der egentlig sker, når testprogrammet åbner vores browservindue. 
-                //TestHelper.Pause();
-
-                Assert.Equal(HomeTitle, driver.Title);
-                Assert.Equal(HomeUrl, driver.Url);
-            }
-        }
-
-        [Fact]
-        [Trait("Category", "smoke")]
-        public void ReloadHomePage()
-        {
-            using (IWebDriver driver = new ChromeDriver())
-            {
-                
-                driver.Navigate().GoToUrl(HomeUrl);
-                driver.Navigate().Refresh();
-                Assert.Equal(HomeTitle, driver.Title);
-                Assert.Equal(HomeUrl, driver.Url);
-
-            }
-        }
 
 
         [Fact]
@@ -113,40 +65,6 @@ namespace SearchEngine.UITests
             }
         }
 
-        [Fact]
-        [Trait("Category", "smoke")]
-        public void ReloadHomePageOnForward()
-        {
-            using (IWebDriver driver = new ChromeDriver())
-            {
-
-                driver.Navigate().GoToUrl(PrivateUrl);
-                //TestHelper.Pause();
-
-                driver.Navigate().GoToUrl(HomeUrl);
-                //TestHelper.Pause(100); // Giver random number tid til at genererer et nummer, ellers bliver værdien sat til - ""
-                //IWebElement randomNumber = driver.FindElement(By.Id("readomNumberToTestOn"));
-                //string initialToken = randomNumber.Text;
-
-                //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromMilliseconds(10));
-                //IWebElement randomNumber = wait.Until((d) => d.FindElement(By.Id("readomNumberToTestOn")));
-                //string initialToken = randomNumber.Text;
-
-                driver.Navigate().Back();
-                //TestHelper.Pause();
-
-                driver.Navigate().Forward();
-                TestHelper.Pause(200);// Giver random number tid til at genererer et nummer, ellers bliver værdien sat til - ""
-
-
-                Assert.Equal(HomeTitle, driver.Title);
-                Assert.Equal(HomeUrl, driver.Url);
-
-                //string reloadedToken = driver.FindElement(By.Id("readomNumberToTestOn")).Text;
-                //Assert.NotEqual(initialToken, reloadedToken);
-
-            }
-        }
 
         [Fact]
         [Trait("Category", "smoke")]
@@ -173,7 +91,36 @@ namespace SearchEngine.UITests
             }
         }
 
+        [Fact]
+        [Trait("Category", "smoke")]
+        public void ManipulatinBrowserWindowSize()
+        {
+            using (IWebDriver driver = new ChromeDriver())
+            {
 
+                var homePage = new HomePage(driver);
+                homePage.NavigateTo();
+                TestHelper.Pause(2000);
+
+                homePage.MaximizeBrowserWindow();
+                TestHelper.Pause(2000);
+                driver.Manage().Window.Minimize();
+                TestHelper.Pause(2000);
+                driver.Manage().Window.Size = new System.Drawing.Size(300, 400);
+                TestHelper.Pause(2000);
+                driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
+                TestHelper.Pause(2000);
+                driver.Manage().Window.Position = new System.Drawing.Point(50, 50);
+                TestHelper.Pause(2000);
+                driver.Manage().Window.Position = new System.Drawing.Point(100, 100);
+                TestHelper.Pause(2000);
+                driver.Manage().Window.FullScreen();
+                TestHelper.Pause(2000);
+
+                Assert.Equal(HomeTitle, driver.Title);
+                Assert.Equal(HomeUrl, driver.Url);
+            }
+        }
 
 
         [Fact]
@@ -186,12 +133,11 @@ namespace SearchEngine.UITests
 
                 driver.Navigate().GoToUrl(PrivateUrl);
                 driver.Manage().Window.Maximize();
-                ITakesScreenshot screenShotDriver = (ITakesScreenshot)driver;
 
+                ITakesScreenshot screenShotDriver = (ITakesScreenshot)driver;
                 Screenshot screenshot = screenShotDriver.GetScreenshot();
 
-                TestHelper.Pause(5000);
-
+                TestHelper.Pause(2000);
                 screenshot.SaveAsFile("privacy.bmp", ScreenshotImageFormat.Bmp);
 
                 FileInfo file = new FileInfo("privacy.bmp");
