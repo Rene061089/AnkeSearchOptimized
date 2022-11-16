@@ -34,13 +34,14 @@ namespace SearchEngine.UITests
                 var homePage = new HomePage(driver);
                 homePage.NavigateTo();
                 TestHelper.Pause();
-                IWebElement privacyLink = driver.FindElement(By.Name("ToPortal"));
-                privacyLink.Click();
 
-                TestHelper.Pause();
+                PrivacyPage privacyPage =  homePage.ClickPrivacyLink();
 
-                Assert.Equal("Privacy Policy - WebApplication1", driver.Title);
-                Assert.Equal(PrivateUrl, driver.Url);
+                TestHelper.Pause(1000);
+
+                privacyPage.EnsurePageHasLoaded();
+
+
             }
         }
 
@@ -133,31 +134,32 @@ namespace SearchEngine.UITests
         [Fact]
         public void FillInSearchParams()
         {
+            const string firstSearchWord = "Hund ";
             using (IWebDriver driver = new ChromeDriver())
             {
                 var homePage = new HomePage(driver);
-                //output.WriteLine($"{DateTime.Now.ToLongTimeString()} Navigate to '{HomeUrl}'");
                 homePage.NavigateTo();
-                driver.Manage().Window.Maximize();
-                TestHelper.Pause();
-                output.WriteLine($"{DateTime.Now.ToLongTimeString()} Typing in value to input text field");
-                driver.FindElement(By.Id("txtInputAutocomplete")).SendKeys("Hund ");
-                TestHelper.Pause(1000);
-                driver.FindElement(By.Id("txtInputAutocomplete")).SendKeys("kat");
-                TestHelper.Pause(1000);
+                //output.WriteLine($"{DateTime.Now.ToLongTimeString()} Navigate to '{HomeUrl}'");
+                homePage.MaximizeBrowserWindow();
+
+                //output.WriteLine($"{DateTime.Now.ToLongTimeString()} Typing in value to input text field");
+                homePage.EnterSearchWord(firstSearchWord);
+                //TestHelper.Pause(1000);
+                homePage.EnterSearchWord("kat");
+                //TestHelper.Pause(1000);
                 //Select Checkbox
-                output.WriteLine($"{DateTime.Now.ToLongTimeString()} Finding element and clicking on it");
-                driver.FindElement(By.Id("checkboxComplainantUpheld")).Click();
-                TestHelper.Pause(1000);
+                //output.WriteLine($"{DateTime.Now.ToLongTimeString()} Finding element and clicking on it");
+                homePage.ClickCheckboxComplainantUpheld();
+                //TestHelper.Pause(1000);
                 //select from custom company dropdown
-                output.WriteLine($"{DateTime.Now.ToLongTimeString()} Finding element and opens it by clicking on it");
+                //output.WriteLine($"{DateTime.Now.ToLongTimeString()} Finding element and opens it by clicking on it");
                 driver.FindElement(By.Id("companyNames")).Click();
                 TestHelper.Pause(1000);
                 driver.FindElement(By.CssSelector("[data-tooltip*='Tryg Forsikring']")).Click();
-                TestHelper.Pause(1000);
+                //TestHelper.Pause(1000);
                 driver.FindElement(By.CssSelector("[data-tooltip*='Alm. Brand']")).Click();
                 //TestHelper.Pause(1000);
-                output.WriteLine($"{DateTime.Now.ToLongTimeString()} Finding element and closes it by clicking on it");
+                //output.WriteLine($"{DateTime.Now.ToLongTimeString()} Finding element and closes it by clicking on it");
                 driver.FindElement(By.Id("companyNames")).Click();
                 TestHelper.Pause(1000);
                 ////select from custom incurance-type dropdown
@@ -169,46 +171,29 @@ namespace SearchEngine.UITests
                 //Select Date between
                 //driver.FindElement(By.Id("fromDate")).Click();
                 //TestHelper.Pause(1000);
-                output.WriteLine($"{DateTime.Now.ToLongTimeString()} Finding element and setting the date by filling in value as a text sting");
+                //output.WriteLine($"{DateTime.Now.ToLongTimeString()} Finding element and setting the date by filling in value as a text sting");
                 driver.FindElement(By.Id("fromDate")).SendKeys("24062012");
                 //TestHelper.Pause(1000);
                 driver.FindElement(By.Id("toDate")).SendKeys("26062012");
+                TestHelper.Pause(5000);
+                //output.WriteLine($"{DateTime.Now.ToLongTimeString()} Submitting the form");
                 //TestHelper.Pause(2000);
-                output.WriteLine($"{DateTime.Now.ToLongTimeString()} Submitting the form");
-                TestHelper.Pause(2000);
-                driver.FindElement(By.Id("btnAutocomplete")).Click();
+                homePage.ClickSubmitButton();
+                TestHelper.Pause(1000);
 
                 Assert.Equal("25.06.2012", driver.FindElement(By.ClassName("saved-date")).Text);
-                Assert.Equal("81400", driver.FindElement(By.ClassName("saved-caseNumber")).Text);
+                Assert.Equal("81400", homePage.CaseNumber);
                 Assert.Equal("accept af risiko, personskade, hundeansvarsforsikring, besidder", driver.FindElement(By.ClassName("saved-searchWords")).Text);
                 Assert.Equal("alm. brand", driver.FindElement(By.ClassName("saved-companyName")).Text);
                 Assert.Equal("husdyr", driver.FindElement(By.ClassName("saved-insuranceType")).Text);
                 Assert.Equal("klager medhold", driver.FindElement(By.ClassName("saved-result")).Text);
                 Assert.Equal("ja", driver.FindElement(By.ClassName("saved-principle")).Text);
 
-                TestHelper.Pause(5000);
+                TestHelper.Pause(2000);
             }
         }
         
 
-        //[Fact]
-        //public void GoToFogPByXPath()
-        //{
-        //    using (IWebDriver driver = new ChromeDriver())
-        //    {
-
-        //        driver.Navigate().GoToUrl(HomeUrl);
-        //        TestHelper.Pause();
-        //        driver.Manage().Window.Maximize();
-        //        IWebElement fogpLinkXpath = driver.FindElement(By.XPath("/html/body/footer[1]/section/div/div/div[2]/div/div/div[2]"));
-
-        //        fogpLinkXpath.Click();
-
-        //        TestHelper.Pause();
-
-        //        //Assert.Equal("Privacy Policy - WebApplication1", driver.Title);
-        //        //Assert.Equal(PrivateUrl, driver.Url);
-        //    }
-        //}
+       
     }
 }

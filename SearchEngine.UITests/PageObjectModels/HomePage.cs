@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 
 namespace SearchEngine.UITests.PageObjectModels
 {
-    class HomePage
+    class HomePage : BasePage
     {
-        private readonly IWebDriver Driver;
-        private const string PageUrl = "https://localhost:7017/";
-        private const string PageTitle = "- WebApplication1";
+        protected override string PageTitle => "- WebApplication1";
+        protected override string PageUrl => "https://localhost:7017/";
+        
 
         public HomePage(IWebDriver driver)
         {
@@ -27,35 +27,24 @@ namespace SearchEngine.UITests.PageObjectModels
         //
         public string GenerationToken => Driver.FindElement(By.ClassName("saved-caseNumber")).Text;
         public void ClickfrequentlyAskedQuestionsLink() => Driver.FindElement(By.Name("frequentlyAskedQuestions")).Click();
+
+        public void EnterSearchWord(string word) => Driver.FindElement(By.Id("txtInputAutocomplete")).SendKeys(word);
+
+        public void ClickCheckboxComplainantUpheld() => Driver.FindElement(By.Id("checkboxComplainantUpheld")).Click();
+
+        public void ClickSubmitButton() =>  Driver.FindElement(By.Id("btnAutocomplete")).Click();
+
+        public string CaseNumber => Driver.FindElement(By.ClassName("saved-caseNumber")).Text;
+
         public void MaximizeBrowserWindow() => Driver.Manage().Window.Maximize();
 
 
-        public void NavigateTo()
+        public PrivacyPage ClickPrivacyLink()
         {
-            Driver.Navigate().GoToUrl(PageUrl);
-            EnsurePageHasLoaded();
+            Driver.FindElement(By.Name("ToPortal")).Click();
+            return new PrivacyPage(Driver);
         }
 
-        public void EnsurePageHasLoaded(bool onlyCheckStartOfTheUrlText = true)
-        {
-
-            bool urlIsCorrect;
-            if(onlyCheckStartOfTheUrlText)
-            {
-                urlIsCorrect = Driver.Url.StartsWith(PageUrl);
-            }
-            else
-            {
-                urlIsCorrect = Driver.Url == PageUrl;
-            }
-
-            bool ensurePageHasLoaded = urlIsCorrect && (Driver.Title == PageTitle);
-
-            if (!ensurePageHasLoaded)
-            {
-                throw new Exception($"Falid to load page. Page URL = '{Driver.Url}' Page Source \r\n {Driver.PageSource}");
-            }
-        }
 
     }
 }
