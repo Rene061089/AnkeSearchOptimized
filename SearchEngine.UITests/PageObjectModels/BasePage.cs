@@ -3,7 +3,7 @@ using System;
 
 namespace SearchEngine.UITests.PageObjectModels
 {
-     class BasePage
+    class BasePage
     {
         protected IWebDriver Driver;
         protected virtual string PageUrl { get; }
@@ -15,6 +15,13 @@ namespace SearchEngine.UITests.PageObjectModels
             Driver.Navigate().GoToUrl(PageUrl);
             EnsurePageHasLoaded();
         }
+
+
+        public void MaximizeBrowserWindow() => Driver.Manage().Window.Maximize();
+        public void MinimizeBrowserWindow() => Driver.Manage().Window.Minimize();
+
+
+      
 
         /// <summary>
         /// Checks that the URL And page title are as we expect

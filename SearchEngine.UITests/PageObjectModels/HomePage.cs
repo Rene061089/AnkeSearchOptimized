@@ -36,7 +36,7 @@ namespace SearchEngine.UITests.PageObjectModels
 
         public string CaseNumber => Driver.FindElement(By.ClassName("saved-caseNumber")).Text;
 
-        public void MaximizeBrowserWindow() => Driver.Manage().Window.Maximize();
+        
 
 
         public PrivacyPage ClickPrivacyLink()

@@ -16,7 +16,7 @@ namespace SearchEngine.UITests.PageObjectModels
             Driver = driver;
         }
 
-
+        public void GoBack() => Driver.Navigate().Back();
 
     }
 }

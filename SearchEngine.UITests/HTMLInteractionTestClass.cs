@@ -135,6 +135,7 @@ namespace SearchEngine.UITests
         public void FillInSearchParams()
         {
             const string firstSearchWord = "Hund ";
+
             using (IWebDriver driver = new ChromeDriver())
             {
                 var homePage = new HomePage(driver);

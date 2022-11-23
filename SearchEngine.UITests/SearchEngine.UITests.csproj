@@ -119,6 +119,8 @@
     <Compile Include="PageObjectModels\BasePage.cs" />
     <Compile Include="PageObjectModels\HomePage.cs" />
     <Compile Include="PageObjectModels\PrivacyPage.cs" />
+    <Compile Include="PageObjectModels\ProofOfConceptPage.cs" />
+    <Compile Include="ProofOfConceptClass.cs" />
     <Compile Include="SmokeTestClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelper.cs" />

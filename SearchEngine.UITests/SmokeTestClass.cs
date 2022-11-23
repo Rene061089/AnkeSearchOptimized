@@ -1,13 +1,9 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
 using ApprovalTests.Reporters;
 using System.IO;
 using ApprovalTests;
-using ApprovalTests.Reporters.Windows;
 using SearchEngine.UITests.PageObjectModels;
 
 namespace SearchEngine.UITests
@@ -32,95 +28,99 @@ namespace SearchEngine.UITests
         public void LoadHomePage()
         {
 
-                var homePage = new HomePage(ChromeDriverShared.Driver);
-                homePage.NavigateTo();
+            var homePage = new HomePage(ChromeDriverShared.Driver);
+            homePage.NavigateTo();
 
         }
-
 
 
         [Fact]
         [Trait("Category", "smoke")]
         public void ReloadHomePageOnBack()
         {
-          
 
-                var homePage = new HomePage(ChromeDriverShared.Driver);
-                homePage.NavigateTo();
-                ChromeDriverShared.Driver.Manage().Window.Maximize();
-                TestHelper.Pause(2000);
-                ChromeDriverShared.Driver.FindElement(By.Id("txtInputAutocomplete")).SendKeys("Hund ");
-                ChromeDriverShared.Driver.FindElement(By.Id("txtInputAutocomplete")).SendKeys("kat");
-                TestHelper.Pause(2000);
-                ChromeDriverShared.Driver.FindElement(By.Id("btnAutocomplete")).Click();
-                TestHelper.Pause(2000);
-                string initialToken = homePage.GenerationToken;
+            const string firstSearchWord = "Hund ";
+            const string secondSearchWord = "kat";
 
-                ChromeDriverShared.Driver.Navigate().GoToUrl(PrivateUrl);
-                TestHelper.Pause(2000);
-                ChromeDriverShared.Driver.Navigate().Back();
-                TestHelper.Pause(2000);
-                homePage.EnsurePageHasLoaded();
-                TestHelper.Pause(2000);
-                string reloadedToken = homePage.GenerationToken;
+            var privacyPage = new PrivacyPage(ChromeDriverShared.Driver);
 
-                Assert.NotEqual(initialToken, reloadedToken);
-            
+            var homePage = new HomePage(ChromeDriverShared.Driver);
+            homePage.NavigateTo();
+
+            homePage.MaximizeBrowserWindow();
+            TestHelper.Pause(2000);
+            homePage.EnterSearchWord(firstSearchWord);
+            homePage.EnterSearchWord(secondSearchWord);
+            TestHelper.Pause(2000);
+            homePage.ClickSubmitButton();
+            TestHelper.Pause(2000);
+            string initialToken = homePage.GenerationToken;
+
+            privacyPage.NavigateTo();
+            TestHelper.Pause(2000);
+            privacyPage.GoBack();
+            TestHelper.Pause(2000);
+            homePage.EnsurePageHasLoaded();
+            TestHelper.Pause(2000);
+            string reloadedToken = homePage.GenerationToken;
+
+            Assert.NotEqual(initialToken, reloadedToken);
+
         }
 
 
         [Fact]
         [Trait("Category", "smoke")]
-        public void OpenfrequentlyAskedQuestions()
+        public void OpenfrequentlyAskedQuestionsInNewTab()
         {
-          
-
-                var homePage = new HomePage(ChromeDriverShared.Driver);
-                homePage.NavigateTo();
-
-                homePage.ClickfrequentlyAskedQuestionsLink();
 
 
-                ReadOnlyCollection<string> allTabs = ChromeDriverShared.Driver.WindowHandles;
-                string homePageTab = allTabs[0];
-                string frequentlyQuestionsTab = allTabs[1];
+            var homePage = new HomePage(ChromeDriverShared.Driver);
+            homePage.NavigateTo();
 
-                ChromeDriverShared.Driver.SwitchTo().Window(frequentlyQuestionsTab);
+            homePage.ClickfrequentlyAskedQuestionsLink();
 
-                TestHelper.Pause(200);
 
-                Assert.Equal("https://ankeforsikring.dk/Sider/faq.aspx", ChromeDriverShared.Driver.Url);
-            
+            ReadOnlyCollection<string> allTabs = ChromeDriverShared.Driver.WindowHandles;
+            string homePageTab = allTabs[0];
+            string frequentlyQuestionsTab = allTabs[1];
+
+            ChromeDriverShared.Driver.SwitchTo().Window(frequentlyQuestionsTab);
+
+            TestHelper.Pause(200);
+
+            Assert.Equal("https://ankeforsikring.dk/Sider/faq.aspx", ChromeDriverShared.Driver.Url);
+
         }
 
         [Fact]
         [Trait("Category", "smoke")]
-        public void ManipulatinBrowserWindowSize()
+        public void ManipulatinBrowserWindowSizeAndPosition()
         {
-            
 
-                var homePage = new HomePage(ChromeDriverShared.Driver);
-                homePage.NavigateTo();
-                TestHelper.Pause(2000);
 
-                homePage.MaximizeBrowserWindow();
-                TestHelper.Pause(2000);
-                ChromeDriverShared.Driver.Manage().Window.Minimize();
-                TestHelper.Pause(2000);
-                ChromeDriverShared.Driver.Manage().Window.Size = new System.Drawing.Size(300, 400);
-                TestHelper.Pause(2000);
-                ChromeDriverShared.Driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
-                TestHelper.Pause(2000);
-                ChromeDriverShared.Driver.Manage().Window.Position = new System.Drawing.Point(50, 50);
-                TestHelper.Pause(2000);
-                ChromeDriverShared.Driver.Manage().Window.Position = new System.Drawing.Point(100, 100);
-                TestHelper.Pause(2000);
-                ChromeDriverShared.Driver.Manage().Window.FullScreen();
-                TestHelper.Pause(2000);
+            var homePage = new HomePage(ChromeDriverShared.Driver);
+            homePage.NavigateTo();
+            TestHelper.Pause(2000);
 
-                Assert.Equal(HomeTitle, ChromeDriverShared.Driver.Title);
-                Assert.Equal(HomeUrl, ChromeDriverShared.Driver.Url);
-            
+            homePage.MaximizeBrowserWindow();
+            TestHelper.Pause(2000);
+            ChromeDriverShared.Driver.Manage().Window.Minimize();
+            TestHelper.Pause(2000);
+            ChromeDriverShared.Driver.Manage().Window.Size = new System.Drawing.Size(300, 400);
+            TestHelper.Pause(2000);
+            ChromeDriverShared.Driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
+            TestHelper.Pause(2000);
+            ChromeDriverShared.Driver.Manage().Window.Position = new System.Drawing.Point(50, 50);
+            TestHelper.Pause(2000);
+            ChromeDriverShared.Driver.Manage().Window.Position = new System.Drawing.Point(100, 100);
+            //TestHelper.Pause(2000);
+            ChromeDriverShared.Driver.Manage().Window.FullScreen();
+            //TestHelper.Pause(2000);
+
+            Assert.Equal(HomeTitle, ChromeDriverShared.Driver.Title);
+            Assert.Equal(HomeUrl, ChromeDriverShared.Driver.Url);
+
         }
 
 
@@ -130,19 +130,20 @@ namespace SearchEngine.UITests
         public void ScreenShotHomePage()
         {
 
-                ChromeDriverShared.Driver.Navigate().GoToUrl(PrivateUrl);
-                ChromeDriverShared.Driver.Manage().Window.Maximize();
+            ChromeDriverShared.Driver.Navigate().GoToUrl(PrivateUrl);
+            ChromeDriverShared.Driver.Manage().Window.Maximize();
 
-                ITakesScreenshot screenShotDriver = (ITakesScreenshot)ChromeDriverShared.Driver;
-                Screenshot screenshot = screenShotDriver.GetScreenshot();
+            ITakesScreenshot screenShotDriver = (ITakesScreenshot)ChromeDriverShared.Driver;
+            Screenshot screenshot = screenShotDriver.GetScreenshot();
 
-                TestHelper.Pause(2000);
-                screenshot.SaveAsFile("privacy.bmp", ScreenshotImageFormat.Bmp);
+            TestHelper.Pause(2000);
+            screenshot.SaveAsFile("privacy.bmp", ScreenshotImageFormat.Bmp);
+            
+            //TestHelper.Pause(2000);
+            //FileInfo file = new FileInfo("privacy.bmp");
+            //Approvals.Verify(file);
 
-                FileInfo file = new FileInfo("privacy.bmp");
-                Approvals.Verify(file);
 
-           
         }
 
     }
