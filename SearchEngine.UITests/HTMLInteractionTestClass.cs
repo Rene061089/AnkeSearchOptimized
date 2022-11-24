@@ -23,8 +23,6 @@ namespace SearchEngine.UITests
             this.output = output;
         }
 
-
-
         [Fact]
         public void GoToPrivacyPageByLink()
         {

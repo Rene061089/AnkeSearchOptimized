@@ -10,10 +10,15 @@ namespace SearchEngine.UITests.PageObjectModels
         protected override string PageTitle => "- WebApplication1";
         protected override string PageUrl => "https://localhost:7017/";
 
-
+        
         public ProofOfConceptPage(IWebDriver driver)
         {
             Driver = driver;
+        }
+
+        public static void Pause(int secondsToPause = 3000)
+        {
+            Thread.Sleep(secondsToPause);
         }
 
         public void EnterSearchWord(string word) => Driver.FindElement(By.Id("txtInputAutocomplete")).SendKeys(word);
@@ -22,37 +27,41 @@ namespace SearchEngine.UITests.PageObjectModels
         public void FindCompanyName(string CompanyName) => Driver.FindElement(By.CssSelector("[data-tooltip*= " + "'" + CompanyName + "'" + "]")).Click();
         public void ClickCheckboxComplainantUpheld() => Driver.FindElement(By.Id("checkboxComplainantUpheld")).Click();
         public void OpenSummary() => Driver.FindElement(By.ClassName("arrow")).Click();
-        public void SummaryText()
-        {
-            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver;
-            string colorType = "color:red;";
-            Pause(1000);
-            string colorChange = $" style ={colorType}";
-            Pause(1000);
-            string hund = $"<span{colorChange}>hund</span>";
+        public void SaveRuling() => Driver.FindElement(By.ClassName("star")).Click();
+        public void GoToSavedRulings() => Driver.FindElement(By.ClassName("goToSavedRulings")).Click();
+
+        public void OpenOrCloseAllSummaries() => Driver.FindElement(By.ClassName("open-close-all-resumées")).Click();
         
 
-            string summary = $"document.getElementsByClassName('summary')[0].innerHTML.replaceAll('hund', '{hund}')"  ;
-            string summary2 =$"document.getElementsByClassName('summary')[0].innerHTML = {summary} ";
-
-
-            js.ExecuteScript(summary);
-           
-            js.ExecuteScript(summary2);
-
-           
-        }
         public string CaseNumber => Driver.FindElement(By.ClassName("saved-caseNumber")).Text;
+        public string RulingsFound => Driver.FindElement(By.ClassName("totalRulingsSpan")).Text;
 
-        public static void Pause(int secondsToPause = 3000)
+
+        public void ResetButtonByJs()
         {
-            Thread.Sleep(secondsToPause);
+            string script = "document.getElementsByClassName('reset-search-button')[0].click();";
+            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver;
+            js.ExecuteScript(script);
         }
 
+        public void HighligtSummaryWordByJs(string word)
+        {
+            
+            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver;
+            string searchWord = word;
+            string colorType = "background-color:yellow";
+            string colorStyle = $" style ={colorType}";
+            word = $"<span{colorStyle}>{word}</span>";
 
+            string summary = $"document.getElementsByClassName('summary')[0].innerHTML.replaceAll('{searchWord}', '{word}')"  ;
+            string summary2 =$"document.getElementsByClassName('summary')[0].innerHTML = {summary} ";
+            
+            js.ExecuteScript(summary);
+            js.ExecuteScript(summary2);
+           
 
-
-
+        }
+       
         public void ScrollWindowByJS(int x, int y)
         {
             string scroll = "window.scrollBy(" + x + "," + y + ")";

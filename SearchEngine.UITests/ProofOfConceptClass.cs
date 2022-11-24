@@ -33,12 +33,36 @@ namespace SearchEngine.UITests
                 pocPage.ScrollWindowByJS(0, 500);
                 TestHelper.Pause();
                 pocPage.ChangeElementColorByJS("saved-caseNumber");
+                pocPage.ChangeElementColorByJS("saved-companyName");
+                pocPage.ChangeElementColorByJS("saved-result");
+                Assert.Equal("81400", pocPage.CaseNumber);
+
+
                 pocPage.OpenSummary();
                 pocPage.ScrollWindowByJS(0, 500);
-                pocPage.SummaryText();
-                TestHelper.Pause(20000);
-                
-                Assert.Equal("81400", pocPage.CaseNumber);
+                pocPage.HighligtSummaryWordByJs("hund");
+                TestHelper.Pause(1000);
+                pocPage.HighligtSummaryWordByJs("kat");
+                TestHelper.Pause(5000);
+
+
+                TestHelper.Pause();
+                pocPage.SaveRuling();
+                TestHelper.Pause();
+
+
+                pocPage.ScrollWindowByJS(0, -500);
+                pocPage.ChangeElementColorByJS("reset-search-button");
+                TestHelper.Pause(1000);
+                pocPage.ResetButtonByJs();
+                TestHelper.Pause(1000);
+                string howManyCases = pocPage.RulingsFound;
+                Assert.Equal("46375", howManyCases);
+                pocPage.ChangeElementColorByJS("totalRulingsSpan");
+                TestHelper.Pause(5000);
+
+                pocPage.GoToSavedRulings();
+                TestHelper.Pause(5000);
 
             }
 
