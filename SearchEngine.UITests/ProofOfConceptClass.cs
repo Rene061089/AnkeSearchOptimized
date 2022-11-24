@@ -61,9 +61,47 @@ namespace SearchEngine.UITests
                 pocPage.ChangeElementColorByJS("totalRulingsSpan");
                 TestHelper.Pause(5000);
 
+
                 pocPage.GoToSavedRulings();
+                Assert.NotEqual("Du har ikke gemt nogle afgørelser", pocPage.NoSavedRulingsText);
+                TestHelper.Pause(5000);
+                pocPage.RemoveSaveRuling();
+                TestHelper.Pause();
+                Assert.Equal("Du har ikke gemt nogle afgørelser", pocPage.NoSavedRulingsText);
                 TestHelper.Pause(5000);
 
+                pocPage.GoToSearchResult();
+                TestHelper.Pause(5000);
+            }
+
+        }
+
+        [Fact]
+        public void LoadMaxRulings()
+        {
+            using (IWebDriver driver = new ChromeDriver())
+            {
+                var counter = 1;
+                var pocPage = new ProofOfConceptPage(driver);
+                pocPage.NavigateTo();
+                pocPage.MaximizeBrowserWindow();
+                TestHelper.Pause(2000);
+                pocPage.ScrollWindowByJS(0, 1800);
+                TestHelper.Pause();
+                
+                while (counter < 10)
+                {
+                    Assert.NotEqual("Du har hentet 100 afgørelser og endnu ikke fundet hvad du ledte efter." + "\r\n" +
+                             "Vær mere specifik i din søgning for at indsævre søgningen, dette kan gøres ved at vælge flere søgeparametre.", pocPage.ToManyRulingsText);
+                    pocPage.ClickGetMoreRulings();
+                    counter++;
+                    
+                    TestHelper.Pause(500);
+                }
+
+                TestHelper.Pause();
+                Assert.Equal("Du har hentet 100 afgørelser og endnu ikke fundet hvad du ledte efter." + "\r\n" +
+                             "Vær mere specifik i din søgning for at indsævre søgningen, dette kan gøres ved at vælge flere søgeparametre.", pocPage.ToManyRulingsText);
             }
 
         }

@@ -28,13 +28,18 @@ namespace SearchEngine.UITests.PageObjectModels
         public void ClickCheckboxComplainantUpheld() => Driver.FindElement(By.Id("checkboxComplainantUpheld")).Click();
         public void OpenSummary() => Driver.FindElement(By.ClassName("arrow")).Click();
         public void SaveRuling() => Driver.FindElement(By.ClassName("star")).Click();
+        public void RemoveSaveRuling() => Driver.FindElement(By.ClassName("saved")).Click();
         public void GoToSavedRulings() => Driver.FindElement(By.ClassName("goToSavedRulings")).Click();
+        public void GoToSearchResult() => Driver.FindElement(By.ClassName("goToSearchResult")).Click();
+        public void ClickGetMoreRulings() => Driver.FindElement(By.ClassName("getMoreRulings")).Click();
 
         public void OpenOrCloseAllSummaries() => Driver.FindElement(By.ClassName("open-close-all-resumées")).Click();
         
 
         public string CaseNumber => Driver.FindElement(By.ClassName("saved-caseNumber")).Text;
         public string RulingsFound => Driver.FindElement(By.ClassName("totalRulingsSpan")).Text;
+        public string NoSavedRulingsText=> Driver.FindElement(By.CssSelector("div.filler-when-empty p")).Text;
+        public string ToManyRulingsText=> Driver.FindElement(By.ClassName("user-be-more-specifik-text")).Text;
 
 
         public void ResetButtonByJs()
@@ -69,6 +74,16 @@ namespace SearchEngine.UITests.PageObjectModels
             js.ExecuteScript(scroll);
 
         }
+
+        public void ScrollToViewByJS(string className)
+        {
+            string goTo = "'" + className + "'";
+            string scroll = $"document.getElementsByClassName({goTo})[0].scrollIntoView()";
+            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver;
+            js.ExecuteScript(scroll);
+
+        }
+
 
         public void ChangeElementColorByJS(string classNameOrId)
         {
