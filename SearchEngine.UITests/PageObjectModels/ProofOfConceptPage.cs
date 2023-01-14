@@ -10,7 +10,7 @@ namespace SearchEngine.UITests.PageObjectModels
         protected override string PageTitle => "- WebApplication1";
         protected override string PageUrl => "https://localhost:7017/";
 
-        
+
         public ProofOfConceptPage(IWebDriver driver)
         {
             Driver = driver;
@@ -32,14 +32,14 @@ namespace SearchEngine.UITests.PageObjectModels
         public void GoToSavedRulings() => Driver.FindElement(By.ClassName("goToSavedRulings")).Click();
         public void GoToSearchResult() => Driver.FindElement(By.ClassName("goToSearchResult")).Click();
         public void ClickGetMoreRulings() => Driver.FindElement(By.ClassName("getMoreRulings")).Click();
-
         public void OpenOrCloseAllSummaries() => Driver.FindElement(By.ClassName("open-close-all-resumées")).Click();
-        
+
 
         public string CaseNumber => Driver.FindElement(By.ClassName("saved-caseNumber")).Text;
+        public string CaseNumberSaved => Driver.FindElement(By.XPath("//*[@id='localSavedCases']/div[1]/div[2]/div/div[2]/div[2]")).Text;
         public string RulingsFound => Driver.FindElement(By.ClassName("totalRulingsSpan")).Text;
-        public string NoSavedRulingsText=> Driver.FindElement(By.CssSelector("div.filler-when-empty p")).Text;
-        public string ToManyRulingsText=> Driver.FindElement(By.ClassName("user-be-more-specifik-text")).Text;
+        public string NoSavedRulingsText => Driver.FindElement(By.CssSelector("div.filler-when-empty p")).Text;
+        public string ToManyRulingsText => Driver.FindElement(By.ClassName("user-be-more-specifik-text")).Text;
 
 
         public void ResetButtonByJs()
@@ -51,22 +51,22 @@ namespace SearchEngine.UITests.PageObjectModels
 
         public void HighligtSummaryWordByJs(string word)
         {
-            
+
             IJavaScriptExecutor js = (IJavaScriptExecutor)Driver;
             string searchWord = word;
             string colorType = "background-color:yellow";
             string colorStyle = $" style ={colorType}";
             word = $"<span{colorStyle}>{word}</span>";
 
-            string summary = $"document.getElementsByClassName('summary')[0].innerHTML.replaceAll('{searchWord}', '{word}')"  ;
-            string summary2 =$"document.getElementsByClassName('summary')[0].innerHTML = {summary} ";
-            
+            string summary = $"document.getElementsByClassName('summary')[0].innerHTML.replaceAll('{searchWord}', '{word}')";
+            string summary2 = $"document.getElementsByClassName('summary')[0].innerHTML = {summary} ";
+
             js.ExecuteScript(summary);
             js.ExecuteScript(summary2);
-           
+
 
         }
-       
+
         public void ScrollWindowByJS(int x, int y)
         {
             string scroll = "window.scrollBy(" + x + "," + y + ")";
@@ -93,5 +93,19 @@ namespace SearchEngine.UITests.PageObjectModels
 
         }
 
+
+        public void ClickLinkByJS(string linkId)
+        {
+
+            string linkToClick = "'" + linkId + "'"; 
+            string script = $"document.getElementById({linkToClick}).click();";
+            
+            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver;
+            js.ExecuteScript(script);
+
+        }
+
+
+       
     }
 }

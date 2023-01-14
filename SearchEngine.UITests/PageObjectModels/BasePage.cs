@@ -19,9 +19,16 @@ namespace SearchEngine.UITests.PageObjectModels
 
         public void MaximizeBrowserWindow() => Driver.Manage().Window.Maximize();
         public void MinimizeBrowserWindow() => Driver.Manage().Window.Minimize();
+        public void SetBrowserToMobile()
+        {
+            //Driver.SwitchTo().ActiveElement().SendKeys(Keys.F12);
+            //Driver.SwitchTo().ActiveElement().SendKeys("Ctrl" + "Shift" + "M");
+            //Driver.Manage().Window.Size.  (new Dimension(EmulatedDevices.IPHONE7.getWidth(), EmulatedDevices.IPHONE7.getHeight()));
+        }
 
+        public void SetFixedBrowsSize(int x, int y) => Driver.Manage().Window.Size = new System.Drawing.Size(x, y);
+        public void SetFixedBrowsPosition(int x, int y) => Driver.Manage().Window.Position = new System.Drawing.Point(x, y);
 
-      
 
         /// <summary>
         /// Checks that the URL And page title are as we expect

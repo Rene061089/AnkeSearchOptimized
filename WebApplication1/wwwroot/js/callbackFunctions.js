@@ -1,4 +1,4 @@
-﻿// in this file is where all funktions that handles the data from the callAPIFunctions and where the data object that is sent to the Search API i assembled 
+﻿// this file is where all funktions that handles the data from the callAPIFunctions and where the data object that is sent to the Search API i assembled 
 
 var pages = 1;
 var uniqeSearchString = "";
@@ -9,9 +9,6 @@ function searchCallback(data) {
 
         data.cases[i].DATE_FORMATED = formatDate(data.cases[i].closeD_DATE);
         data.cases[i].principle = formatPK(data.cases[i].principle)
-        //data.cases[i].searchWords = data.cases[i].searchWords;
-        //data.cases[i].result = data.cases[i].result.trim();
-        //console.log(data.cases[i].closeD_DATE);
 
     }
     //Company custom dropdown
